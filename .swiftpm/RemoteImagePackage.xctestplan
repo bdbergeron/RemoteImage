@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "FEE9C245-18E2-4599-A9BB-1DBED2AF0139",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "RemoteImageTests",
+        "name" : "RemoteImageTests"
+      }
+    }
+  ],
+  "version" : 1
+}
