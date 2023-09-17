@@ -10,9 +10,12 @@
 		5C0A6DD42AA2356E0078B6C9 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 5C0A6DD32AA2356E0078B6C9 /* ViewInspector */; };
 		5C0A6DD62AA2358E0078B6C9 /* RemoteImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0A6DD52AA2358E0078B6C9 /* RemoteImageTests.swift */; };
 		5C0A6DD82AA23EE00078B6C9 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0A6DD72AA23EE00078B6C9 /* Helpers.swift */; };
+		5C0D6A012AB7A0680017092C /* RemoteImageStubbyResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0D6A002AB7A0680017092C /* RemoteImageStubbyResponder.swift */; };
+		5C0D6A0B2AB7A1490017092C /* Stubby in Frameworks */ = {isa = PBXBuildFile; productRef = 5C0D6A0A2AB7A1490017092C /* Stubby */; };
 		5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */; };
-		5C6968412AAE2CF600F8BA44 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6968402AAE2CF600F8BA44 /* MockURLProtocol.swift */; };
+		5C6441982AB7BD96008927B8 /* Stubby in Frameworks */ = {isa = PBXBuildFile; productRef = 5C6441972AB7BD96008927B8 /* Stubby */; };
 		5C6968472AAE4F1800F8BA44 /* URLSessionDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */; };
+		5CAE18C82AB7A8DA00D97A4C /* URLSession+CacheListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAE18C72AB7A8DA00D97A4C /* URLSession+CacheListener.swift */; };
 		5CE5B0062AB38B4A000F79A8 /* Doggo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CA9A4C92AB265CD00A00232 /* Doggo.jpg */; };
 		OBJ_24 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* RemoteImage.swift */; };
 		OBJ_42 /* RemoteImageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* RemoteImageViewModelTests.swift */; };
@@ -32,10 +35,11 @@
 /* Begin PBXFileReference section */
 		5C0A6DD52AA2358E0078B6C9 /* RemoteImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageTests.swift; sourceTree = "<group>"; };
 		5C0A6DD72AA23EE00078B6C9 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		5C0D6A002AB7A0680017092C /* RemoteImageStubbyResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageStubbyResponder.swift; sourceTree = "<group>"; };
 		5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageViewModel.swift; sourceTree = "<group>"; };
-		5C6968402AAE2CF600F8BA44 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataTests.swift; sourceTree = "<group>"; };
 		5CA9A4C92AB265CD00A00232 /* Doggo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Doggo.jpg; sourceTree = "<group>"; };
+		5CAE18C72AB7A8DA00D97A4C /* URLSession+CacheListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+CacheListener.swift"; sourceTree = "<group>"; };
 		5CF5C4FE2AA258FC00B3FC01 /* RemoteImage.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RemoteImage.xctestplan; sourceTree = "<group>"; };
 		OBJ_12 /* RemoteImageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageViewModelTests.swift; sourceTree = "<group>"; };
 		OBJ_16 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -60,17 +64,26 @@
 			files = (
 				OBJ_44 /* RemoteImage.framework in Frameworks */,
 				5C0A6DD42AA2356E0078B6C9 /* ViewInspector in Frameworks */,
+				5C0D6A0B2AB7A1490017092C /* Stubby in Frameworks */,
+				5C6441982AB7BD96008927B8 /* Stubby in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C0D6A092AB7A1490017092C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5C6968452AAE4EE300F8BA44 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				5C0A6DD72AA23EE00078B6C9 /* Helpers.swift */,
-				5C6968402AAE2CF600F8BA44 /* MockURLProtocol.swift */,
+				5C0D6A002AB7A0680017092C /* RemoteImageStubbyResponder.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -123,6 +136,7 @@
 				OBJ_13 /* Products */,
 				OBJ_16 /* LICENSE */,
 				OBJ_18 /* README.md */,
+				5C0D6A092AB7A1490017092C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,6 +153,7 @@
 			children = (
 				OBJ_9 /* RemoteImage.swift */,
 				5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */,
+				5CAE18C72AB7A8DA00D97A4C /* URLSession+CacheListener.swift */,
 			);
 			name = RemoteImage;
 			path = Sources/RemoteImage;
@@ -179,6 +194,8 @@
 			name = RemoteImageTests;
 			packageProductDependencies = (
 				5C0A6DD32AA2356E0078B6C9 /* ViewInspector */,
+				5C0D6A0A2AB7A1490017092C /* Stubby */,
+				5C6441972AB7BD96008927B8 /* Stubby */,
 			);
 			productName = RemoteImageTests;
 			productReference = "remoteimage::RemoteImageTests::Product" /* RemoteImageTests.xctest */;
@@ -203,6 +220,7 @@
 			mainGroup = OBJ_5;
 			packageReferences = (
 				5C0A6DD22AA2356E0078B6C9 /* XCRemoteSwiftPackageReference "ViewInspector" */,
+				5C6441962AB7BD96008927B8 /* XCRemoteSwiftPackageReference "Stubby" */,
 			);
 			productRefGroup = OBJ_13 /* Products */;
 			projectDirPath = "";
@@ -232,6 +250,7 @@
 			files = (
 				5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */,
 				OBJ_24 /* RemoteImage.swift in Sources */,
+				5CAE18C82AB7A8DA00D97A4C /* URLSession+CacheListener.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,9 +259,9 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_42 /* RemoteImageViewModelTests.swift in Sources */,
+				5C0D6A012AB7A0680017092C /* RemoteImageStubbyResponder.swift in Sources */,
 				5C0A6DD82AA23EE00078B6C9 /* Helpers.swift in Sources */,
 				5C0A6DD62AA2358E0078B6C9 /* RemoteImageTests.swift in Sources */,
-				5C6968412AAE2CF600F8BA44 /* MockURLProtocol.swift in Sources */,
 				5C6968472AAE4F1800F8BA44 /* URLSessionDataTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -594,7 +613,15 @@
 			repositoryURL = "https://github.com/nalexn/ViewInspector";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.7;
+				minimumVersion = 0.9.8;
+			};
+		};
+		5C6441962AB7BD96008927B8 /* XCRemoteSwiftPackageReference "Stubby" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:bdbergeron/Stubby.git";
+			requirement = {
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -604,6 +631,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5C0A6DD22AA2356E0078B6C9 /* XCRemoteSwiftPackageReference "ViewInspector" */;
 			productName = ViewInspector;
+		};
+		5C0D6A0A2AB7A1490017092C /* Stubby */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Stubby;
+		};
+		5C6441972AB7BD96008927B8 /* Stubby */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C6441962AB7BD96008927B8 /* XCRemoteSwiftPackageReference "Stubby" */;
+			productName = Stubby;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

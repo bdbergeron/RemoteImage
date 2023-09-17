@@ -1,5 +1,6 @@
 // Created by Brad Bergeron on 8/31/23.
 
+import Stubby
 import SwiftUI
 import XCTest
 
@@ -13,16 +14,7 @@ final class RemoteImageViewModelTests: XCTestCase {
   // MARK: Internal
 
   override func setUp() {
-    cache = .testCache
-    let configuration = URLSessionConfiguration.default
-    configuration.urlCache = cache
-    configuration.protocolClasses = [MockURLProtocol.self]
-    urlSession = URLSession(configuration: configuration)
-  }
-
-  override func tearDown() async throws {
-    MockURLProtocol.resetRequestHandler()
-    try await cache.clear()
+    urlSession = .stubbed(responder: RemoteImageStubbyResponder.self)
   }
 
   func test_initWithDefaultValues() {
@@ -46,8 +38,7 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_cachedImage_returnsImageIfCacheHit() async throws {
-    try MockURLProtocol.configureRequestHandler(with: .cuteDoggo)
-    try await urlSession.fetchAndCacheImage(from: .cuteDoggo)
+    try await urlSession.fetchImage(from: .cuteDoggo)
     let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
     XCTAssertNotNil(model.cachedImage)
   }
@@ -63,8 +54,7 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_skipsLoadIfPhaseIsAlreadyLoaded() async throws {
-    try MockURLProtocol.configureRequestHandler(with: .cuteDoggo)
-    try await urlSession.fetchAndCacheImage(from: .cuteDoggo)
+    try await urlSession.fetchImage(from: .cuteDoggo)
     let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
     model.onAppear()
     guard case .loaded = model.phase else {
@@ -92,9 +82,7 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_failsIfInvalidImageURL() async throws {
-    let data = "Hello, world!".data(using: .utf8)
-    try MockURLProtocol.configureRequestHandler(with: data)
-    let model = RemoteImageViewModel(url: URL(string: "https://www.example.com")!, urlSession: urlSession)
+    let model = RemoteImageViewModel(url: .invalidImage, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
@@ -111,7 +99,6 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_succeedsAnimated() async throws {
-    try MockURLProtocol.configureRequestHandler(with: .cuteDoggo)
     let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
@@ -125,13 +112,12 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_succeedsNotAnimated() async throws {
-    try MockURLProtocol.configureRequestHandler(with: .cuteDoggo)
     let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    try await urlSession.fetchAndCacheImage(from: .cuteDoggo)
+    try await urlSession.fetchImage(from: .cuteDoggo)
     await model.loadImageIfNeeded()
     guard case .loaded = model.phase else {
       XCTFail("Phase should be `.loaded`.")
@@ -141,7 +127,6 @@ final class RemoteImageViewModelTests: XCTestCase {
 
   // MARK: Private
 
-  private var cache: URLCache!
   private var urlSession: URLSession!
 
 }

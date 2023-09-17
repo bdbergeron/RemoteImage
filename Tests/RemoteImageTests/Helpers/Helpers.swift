@@ -13,35 +13,36 @@ extension Data {
   }
 }
 
-extension URL {
+extension URL: ExpressibleByStringLiteral {
+
+  // MARK: Lifecycle
+
+  /// Allow a URL to be constructed directly from a ``StaticString``.
+  /// - Parameter url: URL string representation.
+  public init(stringLiteral url: StaticString) {
+    guard let url = URL(string: "\(url)") else {
+      XCTFail("Invalid URL: \(url)")
+      preconditionFailure("Invalid URL: \(url)")
+    }
+    self = url
+  }
+
+  // MARK: Internal
+
   /// A picture of a cute doggo. 🐶
-  static var cuteDoggo: URL {
-    URL(string: "https://fastly.picsum.photos/id/237/200/200.jpg?hmac=zHUGikXUDyLCCmvyww1izLK3R3k8oRYBRiTizZEdyfI")!
-  }
-}
+  static let cuteDoggo: URL = "https://fastly.picsum.photos/id/237/200/200.jpg?hmac=zHUGikXUDyLCCmvyww1izLK3R3k8oRYBRiTizZEdyfI"
 
-extension URLCache {
-  /// Small cache to use with tests.
-  static let testCache: URLCache = {
-    let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
-    let cacheDirectory = cacheURL?.appendingPathComponent("RemoteImageTests")
-    return URLCache(memoryCapacity: 1_000_000, diskCapacity: 10_000_000, directory: cacheDirectory)
-  }()
-
-  func clear() async throws {
-    removeAllCachedResponses()
-    // The above call is not immediate; sleep a tiny bit to ensure the cache is actually clear for the next test.
-    try await Task.sleep(for: .milliseconds(10))
-  }
+  /// A non-image URL.
+  static let invalidImage: URL = "https://github.com"
 }
 
 extension URLSession {
-  /// Fetch and cache an image.
+  /// Fetch an image.
   /// - Parameters:
   ///   - url: Image URL to fetch.
   ///   - cache: Cache instance to use with URLSession.
-  @discardableResult
-  func fetchAndCacheImage(from url: URL) async throws -> Image {
+  /// - Returns: An ``Image`` instance of the fetched image.
+  @discardableResult func fetchImage(from url: URL) async throws -> Image {
     let (data, _) = try await data(from: url)
     XCTAssertFalse(data.isEmpty)
     let image = try XCTUnwrap(UIImage(data: data))
@@ -53,26 +54,10 @@ extension Image {
   /// Convert this `Image` view to a `UIImage`. Workaround for not having access to the underlying `UIImage` instance itself.
   /// - Parameter scale: Display scale to render the image at.
   /// - Returns: `UIImage` representation of this `Image` view.
-  @MainActor
-  func uiImageRepresentation(scale: CGFloat = 1.0) -> UIImage? {
+  @MainActor func uiImageRepresentation(scale: CGFloat = 1.0) -> UIImage? {
     let renderer = ImageRenderer(content: self)
     renderer.scale = scale
     return renderer.uiImage
-  }
-
-  func snapshot(origin: CGPoint = .zero, size: CGSize) -> UIImage {
-    let window = UIWindow(frame: CGRect(origin: origin, size: size))
-    let hostingController = UIHostingController(rootView: self)
-    hostingController.view.frame = window.frame
-    window.addSubview(hostingController.view)
-    window.makeKeyAndVisible()
-
-    UIGraphicsBeginImageContextWithOptions(hostingController.view.bounds.size, false, 0.0)
-    let context = UIGraphicsGetCurrentContext()!
-    hostingController.view.layer.render(in: context)
-    let image = UIGraphicsGetImageFromCurrentImageContext()!
-    UIGraphicsEndImageContext()
-    return image
   }
 }
 
