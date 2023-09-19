@@ -19,11 +19,11 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_createsViewModelWithDefaults() throws {
-    var view = RemoteImage(url: .cuteDoggo)
+    var view = RemoteImage(url: .cuteDoggoPicture)
 
     let expectation = view.on(\.didAppear) { inspectable in
       let viewModel = try inspectable.actualView().model
-      viewModel.validateDefaultValues(url: .cuteDoggo)
+      viewModel.validateDefaultValues(url: .cuteDoggoPicture)
     }
 
     ViewHosting.host(view: view)
@@ -31,7 +31,7 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_usesEmptyPlaceholderImage() throws {
-    var view = RemoteImage(url: .cuteDoggo, urlSession: urlSession)
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession)
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
@@ -45,8 +45,8 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_usesLoadedImage() async throws {
-    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggo)
-    var view = RemoteImage(url: .cuteDoggo, urlSession: urlSession)
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession)
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
@@ -59,7 +59,7 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_contentAndPlaceholder_showsPlaceholder() throws {
-    var view = RemoteImage(url: .cuteDoggo, urlSession: urlSession) { image in
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
       image
     } placeholder: {
       ProgressView()
@@ -75,8 +75,8 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_contentAndPlaceholder_showsLoadedImage() async throws {
-    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggo)
-    var view = RemoteImage(url: .cuteDoggo, urlSession: urlSession) { image in
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
       image
     } placeholder: {
       ProgressView()
@@ -94,7 +94,7 @@ final class RemoteImageTests: XCTestCase {
 
   func test_initWithCache_usesEmptyPlaceholderImage() throws {
     let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
-    var view = RemoteImage(url: .cuteDoggo, cache: cache)
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache)
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
@@ -113,8 +113,8 @@ final class RemoteImageTests: XCTestCase {
     configuration.urlCache = cache
     let urlSession = createURLSession(configuration: configuration)
 
-    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggo)
-    var view = RemoteImage(url: .cuteDoggo, cache: cache)
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache)
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
@@ -129,7 +129,7 @@ final class RemoteImageTests: XCTestCase {
   func test_initWithCache_contentAndPlaceholder_showsPlaceholder() throws {
     let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
 
-    var view = RemoteImage(url: .cuteDoggo, cache: cache) { image in
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
       image
     } placeholder: {
       ProgressView()
@@ -150,8 +150,8 @@ final class RemoteImageTests: XCTestCase {
     configuration.urlCache = cache
     let urlSession = createURLSession(configuration: configuration)
 
-    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggo)
-    var view = RemoteImage(url: .cuteDoggo, cache: cache) { image in
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
       image
     } placeholder: {
       ProgressView()

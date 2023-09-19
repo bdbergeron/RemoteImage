@@ -24,7 +24,7 @@ extension RemoteImageStubbedURL: RawRepresentable {
   var rawValue: URL {
     switch self {
     case .cuteDoggoPicture:
-      return .cuteDoggo
+      return .cuteDoggoPicture
     case .invalidImage:
       return .invalidImage
     }

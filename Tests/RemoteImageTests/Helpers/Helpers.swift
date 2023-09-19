@@ -30,7 +30,7 @@ extension URL: ExpressibleByStringLiteral {
   // MARK: Internal
 
   /// A picture of a cute doggo. 🐶
-  static let cuteDoggo: URL = "https://fastly.picsum.photos/id/237/200/200.jpg?hmac=zHUGikXUDyLCCmvyww1izLK3R3k8oRYBRiTizZEdyfI"
+  static let cuteDoggoPicture: URL = "https://fastly.picsum.photos/id/237/200/200.jpg?hmac=zHUGikXUDyLCCmvyww1izLK3R3k8oRYBRiTizZEdyfI"
 
   /// A non-image URL.
   static let invalidImage: URL = "https://bdbergeron.github.io"

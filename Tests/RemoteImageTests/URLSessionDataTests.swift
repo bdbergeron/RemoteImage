@@ -16,14 +16,14 @@ final class URLSessionDataTests: XCTestCase {
   }
 
   func test_dataWithCacheLoadInfo_skipCacheFalse_usesProtocolCachePolicy() async throws {
-    try await urlSession.fetchImage(from: .cuteDoggo)
-    let (_, _, didLoadFromCache) = try await urlSession.cachedData(from: .cuteDoggo, skipCache: false)
+    try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    let (_, _, didLoadFromCache) = try await urlSession.cachedData(from: .cuteDoggoPicture, skipCache: false)
     XCTAssertEqual(didLoadFromCache, true)
   }
 
   func test_dataWithCacheLoadInfo_skipCacheTrue_usesReloadIgnoringLocalCacheData() async throws {
-    try await urlSession.fetchImage(from: .cuteDoggo)
-    let (_, _, didLoadFromCache) = try await urlSession.cachedData(from: .cuteDoggo, skipCache: true)
+    try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    let (_, _, didLoadFromCache) = try await urlSession.cachedData(from: .cuteDoggoPicture, skipCache: true)
     XCTAssertEqual(didLoadFromCache, false)
   }
 

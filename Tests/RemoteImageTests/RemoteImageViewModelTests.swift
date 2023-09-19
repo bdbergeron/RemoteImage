@@ -18,8 +18,8 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_initWithDefaultValues() {
-    let model = RemoteImageViewModel(url: .cuteDoggo)
-    model.validateDefaultValues(url: .cuteDoggo)
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture)
+    model.validateDefaultValues(url: .cuteDoggoPicture)
   }
 
   func test_cachedImage_returnsNilIfNoURL() {
@@ -33,18 +33,18 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_cachedImage_returnsNilIfNoCacheHit() {
-    let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     XCTAssertNil(model.cachedImage)
   }
 
   func test_cachedImage_returnsImageIfCacheHit() async throws {
-    try await urlSession.fetchImage(from: .cuteDoggo)
-    let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
+    try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     XCTAssertNotNil(model.cachedImage)
   }
 
   func test_createImage_throwsOnInvalidData() {
-    let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     XCTAssertThrowsError(try model.createImage(with: .init())) { error in
       guard case .invalidImageData = error as? RemoteImageViewModel.Error else {
         XCTFail("Error should be `.invalidImageData`.")
@@ -54,8 +54,8 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_skipsLoadIfPhaseIsAlreadyLoaded() async throws {
-    try await urlSession.fetchImage(from: .cuteDoggo)
-    let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
+    try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     model.onAppear()
     guard case .loaded = model.phase else {
       XCTFail("Initial phase should be `.loaded`.")
@@ -99,7 +99,7 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_succeedsAnimated() async throws {
-    let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
@@ -112,12 +112,12 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_succeedsNotAnimated() async throws {
-    let model = RemoteImageViewModel(url: .cuteDoggo, urlSession: urlSession)
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    try await urlSession.fetchImage(from: .cuteDoggo)
+    try await urlSession.fetchImage(from: .cuteDoggoPicture)
     await model.loadImageIfNeeded()
     guard case .loaded = model.phase else {
       XCTFail("Phase should be `.loaded`.")
