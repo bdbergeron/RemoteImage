@@ -12,7 +12,7 @@ final class URLSessionDataTests: XCTestCase {
   // MARK: Internal
 
   override func setUp() {
-    urlSession = .stubbed(responder: RemoteImageStubbyResponder.self)
+    urlSession = .stubbed(responseProvider: RemoteImageStubbedURL.self)
   }
 
   func test_dataWithCacheLoadInfo_skipCacheFalse_usesProtocolCachePolicy() async throws {

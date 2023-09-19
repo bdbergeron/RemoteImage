@@ -15,7 +15,7 @@ final class RemoteImageTests: XCTestCase {
   // MARK: Internal
 
   override func setUp() {
-    urlSession = .stubbed(responder: RemoteImageStubbyResponder.self)
+    urlSession = createURLSession()
   }
 
   func test_initWithURLSession_createsViewModelWithDefaults() throws {
@@ -111,7 +111,7 @@ final class RemoteImageTests: XCTestCase {
     let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
     let configuration = URLSessionConfiguration.ephemeral
     configuration.urlCache = cache
-    let urlSession = URLSession(configuration: configuration)
+    let urlSession = createURLSession(configuration: configuration)
 
     let expectedImage = try await urlSession.fetchImage(from: .cuteDoggo)
     var view = RemoteImage(url: .cuteDoggo, cache: cache)
@@ -148,7 +148,7 @@ final class RemoteImageTests: XCTestCase {
     let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
     let configuration = URLSessionConfiguration.ephemeral
     configuration.urlCache = cache
-    let urlSession = URLSession(configuration: configuration)
+    let urlSession = createURLSession(configuration: configuration)
 
     let expectedImage = try await urlSession.fetchImage(from: .cuteDoggo)
     var view = RemoteImage(url: .cuteDoggo, cache: cache) { image in
@@ -170,5 +170,11 @@ final class RemoteImageTests: XCTestCase {
   // MARK: Private
 
   private var urlSession: URLSession!
+
+  private func createURLSession(configuration: URLSessionConfiguration = .ephemeral) -> URLSession {
+    .stubbed(
+      responseProvider: RemoteImageStubbedURL.self,
+      configuration: configuration)
+  }
 
 }

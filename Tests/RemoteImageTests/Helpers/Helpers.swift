@@ -33,7 +33,7 @@ extension URL: ExpressibleByStringLiteral {
   static let cuteDoggo: URL = "https://fastly.picsum.photos/id/237/200/200.jpg?hmac=zHUGikXUDyLCCmvyww1izLK3R3k8oRYBRiTizZEdyfI"
 
   /// A non-image URL.
-  static let invalidImage: URL = "https://github.com"
+  static let invalidImage: URL = "https://bdbergeron.github.io"
 }
 
 extension URLSession {
