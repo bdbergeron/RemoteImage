@@ -2,15 +2,15 @@
 
 import Foundation
 
-// MARK: - URLSession + dataWithCacheLoadInfo
+// MARK: - URLSession + cachedData
 
 extension URLSession {
-  /// Create a data task for the given `URL`, returning a response including cache hit information.
+  /// Create a data task for the given `URL`, returning a response that includes cache hit information.
   /// - Parameter url: `URL` to load data from.
   /// - Parameter skipCache: Whether or not to skip loading data from the local cache.
   /// - Returns: A tuple that contains the `Data` from the response, along with the `URLResponse` itself
   /// and whether or not the response was served from the underlying `URLCache`.
-  func dataWithCacheLoadInfo(
+  func cachedData(
     from url: URL,
     skipCache: Bool)
     async throws

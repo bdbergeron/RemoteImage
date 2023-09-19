@@ -121,8 +121,8 @@ final class RemoteImageViewModel: ObservableObject {
     // Perform network fetch.
     logger.debug("Loading remote image...")
     do {
-      let (data, _, didLoadFromCache) = try await urlSession.dataWithCacheLoadInfo(from: url, skipCache: skipCache)
-      logger.debug("Image loaded with \(data.count) bytes.")
+      let (data, _, didLoadFromCache) = try await urlSession.cachedData(from: url, skipCache: skipCache)
+      logger.debug("Image loaded with \(data.count) bytes. From cache: \(didLoadFromCache).")
       let image = try createImage(with: data)
       let disableAnimation = didLoadFromCache && disableTransactionWithCachedResponse
       logger.debug("Setting phase to .loaded. Animated: \(!disableAnimation).")
@@ -150,7 +150,7 @@ final class RemoteImageViewModel: ObservableObject {
   // MARK: Private
 
   private let logger = Logger(
-    subsystem: String(describing: RemoteImageViewModel.self),
+    subsystem: "io.github.bdbergeron.RemoteImage",
     category: String(describing: RemoteImageViewModel.self))
 
   private var loadingTask: Task<Void, Swift.Error>?

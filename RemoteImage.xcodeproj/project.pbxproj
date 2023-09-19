@@ -15,7 +15,7 @@
 		5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */; };
 		5C6441982AB7BD96008927B8 /* Stubby in Frameworks */ = {isa = PBXBuildFile; productRef = 5C6441972AB7BD96008927B8 /* Stubby */; };
 		5C6968472AAE4F1800F8BA44 /* URLSessionDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */; };
-		5CAE18C82AB7A8DA00D97A4C /* URLSession+CacheListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAE18C72AB7A8DA00D97A4C /* URLSession+CacheListener.swift */; };
+		5CAE18C82AB7A8DA00D97A4C /* URLSession+CachedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAE18C72AB7A8DA00D97A4C /* URLSession+CachedData.swift */; };
 		5CE5B0062AB38B4A000F79A8 /* Doggo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CA9A4C92AB265CD00A00232 /* Doggo.jpg */; };
 		OBJ_24 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* RemoteImage.swift */; };
 		OBJ_42 /* RemoteImageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* RemoteImageViewModelTests.swift */; };
@@ -39,7 +39,7 @@
 		5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageViewModel.swift; sourceTree = "<group>"; };
 		5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataTests.swift; sourceTree = "<group>"; };
 		5CA9A4C92AB265CD00A00232 /* Doggo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Doggo.jpg; sourceTree = "<group>"; };
-		5CAE18C72AB7A8DA00D97A4C /* URLSession+CacheListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+CacheListener.swift"; sourceTree = "<group>"; };
+		5CAE18C72AB7A8DA00D97A4C /* URLSession+CachedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+CachedData.swift"; sourceTree = "<group>"; };
 		5CF5C4FE2AA258FC00B3FC01 /* RemoteImage.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RemoteImage.xctestplan; sourceTree = "<group>"; };
 		OBJ_12 /* RemoteImageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageViewModelTests.swift; sourceTree = "<group>"; };
 		OBJ_16 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 			children = (
 				OBJ_9 /* RemoteImage.swift */,
 				5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */,
-				5CAE18C72AB7A8DA00D97A4C /* URLSession+CacheListener.swift */,
+				5CAE18C72AB7A8DA00D97A4C /* URLSession+CachedData.swift */,
 			);
 			name = RemoteImage;
 			path = Sources/RemoteImage;
@@ -250,7 +250,7 @@
 			files = (
 				5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */,
 				OBJ_24 /* RemoteImage.swift in Sources */,
-				5CAE18C82AB7A8DA00D97A4C /* URLSession+CacheListener.swift in Sources */,
+				5CAE18C82AB7A8DA00D97A4C /* URLSession+CachedData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
