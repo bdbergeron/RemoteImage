@@ -19,14 +19,20 @@ final class RemoteImageViewModel: ObservableObject {
   ///   - skipCache: Whether or not to bypass the cache. Default is `false`.
   ///   - scale: Image scale. Default is `1.0`.
   ///   - transaction: Transaction used during image phase changes. Default is an empty instance.
-  ///   - disableTransactionWithCachedResponse: Whether or not to disable the ``transaction`` when a cached image is returned. Defaults to `true`.
+  ///   - disableTransactionWithCachedResponse: Whether or not to disable the ``transaction`` when a cached image is returned. 
+  ///     Defaults to `true`.
+  ///   - logger: An optional `Logger` instance that will be used internally. Defaults to one that utilizes the "io.github.bdbergeron.RemoteImage" subsystem
+  ///     and "RemoteImageViewModel" category.
   init(
     url: URL?,
     urlSession: URLSession = .shared,
     skipCache: Bool = false,
     scale: CGFloat = 1.0,
     transaction: Transaction = .init(),
-    disableTransactionWithCachedResponse: Bool = true)
+    disableTransactionWithCachedResponse: Bool = true,
+    logger: Logger? = .init(
+      subsystem: "io.github.bdbergeron.RemoteImage",
+      category: String(describing: RemoteImageViewModel.self)))
   {
     self.url = url
     self.urlSession = urlSession
@@ -34,6 +40,7 @@ final class RemoteImageViewModel: ObservableObject {
     self.scale = scale
     self.transaction = transaction
     self.disableTransactionWithCachedResponse = disableTransactionWithCachedResponse
+    self.logger = logger
   }
 
   // MARK: Internal
@@ -65,6 +72,8 @@ final class RemoteImageViewModel: ObservableObject {
   /// The current image phase.
   @Published private(set) var phase: RemoteImagePhase = .placeholder
 
+  var loadingTask: Task<Void, Swift.Error>?
+
   /// Retrieve the cache used by ``urlSession``.
   var cache: URLCache? {
     urlSession.configuration.urlCache
@@ -95,6 +104,10 @@ final class RemoteImageViewModel: ObservableObject {
       setPhase(.loaded(cachedImage), animated: false)
       return
     }
+    if case .loaded(let image) = phase {
+      setPhase(.loaded(image), animated: false)
+      return
+    }
     loadingTask = Task {
       await loadImageIfNeeded()
     }
@@ -103,34 +116,7 @@ final class RemoteImageViewModel: ObservableObject {
   /// When the view owning this model disappears, cancel any in-flight remote image load.
   func onDisappear() {
     loadingTask?.cancel()
-  }
-
-  /// Load the image if needed.
-  ///
-  /// If the current ``phase`` is not ``RemoteImagePhase/placeholder``, we simply return. If the ``url`` is `nil`,
-  /// we set ``phase`` to ``RemoteImagePhase/placeholder`` and return. Otherwise, we attempt to load the remote image.
-  func loadImageIfNeeded() async {
-    // Ensure the image phase is `.placeholder` and we have a valid `URL` to load.
-    guard
-      case .placeholder = phase,
-      let url
-    else {
-      logger.debug("Image phase was not .placeholder, or image URL was nil. Skipping image load.")
-      return
-    }
-    // Perform network fetch.
-    logger.debug("Loading remote image...")
-    do {
-      let (data, _, didLoadFromCache) = try await urlSession.cachedData(from: url, skipCache: skipCache)
-      logger.debug("Image loaded with \(data.count) bytes. From cache: \(didLoadFromCache).")
-      let image = try createImage(with: data)
-      let disableAnimation = didLoadFromCache && disableTransactionWithCachedResponse
-      logger.debug("Setting phase to .loaded. Animated: \(!disableAnimation).")
-      setPhase(.loaded(image), animated: !disableAnimation)
-    } catch {
-      logger.error("Failed to load remote image: \(error.localizedDescription)")
-      setPhase(.failure(error), animated: true)
-    }
+    loadingTask = nil
   }
 
   /// Create an ``Image`` instance with the provided image ``data``.
@@ -141,7 +127,7 @@ final class RemoteImageViewModel: ObservableObject {
   /// - Returns: An ``Image`` instance.
   func createImage(with data: Data) throws -> Image {
     guard let image = UIImage(data: data, scale: scale) else {
-      logger.error("Could not create a UIImage instance from data (\(data)).")
+      logger?.error("Could not create a UIImage instance from data (\(data)).")
       throw Error.invalidImageData
     }
     return Image(uiImage: image)
@@ -149,11 +135,36 @@ final class RemoteImageViewModel: ObservableObject {
 
   // MARK: Private
 
-  private let logger = Logger(
-    subsystem: "io.github.bdbergeron.RemoteImage",
-    category: String(describing: RemoteImageViewModel.self))
+  private let logger: Logger?
 
-  private var loadingTask: Task<Void, Swift.Error>?
+  /// Load the image if needed.
+  ///
+  /// If the `url` is `nil`, we set ``phase`` to ``RemoteImagePhase/placeholder`` and return. Otherwise, we attempt to load the remote image.
+  private func loadImageIfNeeded() async {
+    guard let url else {
+      logger?.debug("Image URL is nil, skipping image load.")
+      return
+    }
+    // Perform network fetch.
+    logger?.debug("Loading image from \(url)...")
+    do {
+      let (data, _, didLoadFromCache) = try await urlSession.cachedData(from: url, skipCache: skipCache)
+      try Task.checkCancellation()
+      logger?.debug("Image loaded from \(url) with \(data.count) bytes. From cache: \(String(describing: didLoadFromCache)).")
+      let image = try createImage(with: data)
+      try Task.checkCancellation()
+      let disableAnimation = didLoadFromCache && disableTransactionWithCachedResponse
+      logger?.debug("Setting phase to .loaded for \(url). Animated: \(String(describing: !disableAnimation)).")
+      setPhase(.loaded(image), animated: !disableAnimation)
+    } catch URLError.cancelled {
+      logger?.debug("Cancelled loading image from \(url).")
+      setPhase(.placeholder, animated: false)
+    } catch {
+      logger?.error("Failed to load image from \(url): \(error.localizedDescription)")
+      setPhase(.failure(error), animated: true)
+    }
+    loadingTask = nil
+  }
 
   /// Set the image phase.
   /// - Parameters:

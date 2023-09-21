@@ -61,20 +61,27 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Initial phase should be `.loaded`.")
       return
     }
-    await model.loadImageIfNeeded()
+    
+    model.onAppear()
+    XCTAssertNil(model.loadingTask)
+
     guard case .loaded = model.phase else {
       XCTFail("Phase should still be `.loaded`.")
       return
     }
   }
 
-  func test_loadImage_skipsLoadIfNoURL() async {
+  func test_loadImage_skipsLoadIfNoURL() async throws {
     let model = RemoteImageViewModel(url: nil)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    await model.loadImageIfNeeded()
+    
+    model.onAppear()
+    let task = try XCTUnwrap(model.loadingTask)
+    try await task.value
+
     guard case .placeholder = model.phase else {
       XCTFail("Phase should still be `.placeholder`.")
       return
@@ -87,7 +94,11 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    await model.loadImageIfNeeded()
+
+    model.onAppear()
+    let task = try XCTUnwrap(model.loadingTask)
+    try await task.value
+
     guard case .failure(let error) = model.phase else {
       XCTFail("Phase should be `.failure`.")
       return
@@ -98,27 +109,88 @@ final class RemoteImageViewModelTests: XCTestCase {
     }
   }
 
-  func test_loadImage_succeedsAnimated() async throws {
+  func test_loadImage_succeedsWithLoadedImage_animated() async throws {
     let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    await model.loadImageIfNeeded()
+    
+    model.onAppear()
+    let task = try XCTUnwrap(model.loadingTask)
+    try await task.value
+
     guard case .loaded = model.phase else {
       XCTFail("Phase should be `.loaded`.")
       return
     }
   }
 
-  func test_loadImage_succeedsNotAnimated() async throws {
+  func test_loadImage_succeedsWithCachedImage_notAnimated() async throws {
     let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
+
     try await urlSession.fetchImage(from: .cuteDoggoPicture)
-    await model.loadImageIfNeeded()
+    
+    model.onAppear()
+    XCTAssertNil(model.loadingTask)
+
+    guard case .loaded = model.phase else {
+      XCTFail("Phase should be `.loaded`.")
+      return
+    }
+  }
+
+  func test_loadImage_stopsLoadingIfCancelled() async throws {
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
+    guard case .placeholder = model.phase else {
+      XCTFail("Initial phase should be `.placeholder`.")
+      return
+    }
+
+    model.onAppear()
+    let task = try XCTUnwrap(model.loadingTask)
+    XCTAssertFalse(task.isCancelled)
+
+    model.onDisappear()
+    XCTAssertTrue(task.isCancelled)
+    XCTAssertNil(model.loadingTask)
+    try await task.value
+
+    guard case .placeholder = model.phase else {
+      XCTFail("Phase should be `.placeholder`.")
+      return
+    }
+  }
+
+  func test_loadImage_loadsIfPreviouslyCancelled() async throws {
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
+    guard case .placeholder = model.phase else {
+      XCTFail("Initial phase should be `.placeholder`.")
+      return
+    }
+
+    model.onAppear()
+    var task = try XCTUnwrap(model.loadingTask)
+    XCTAssertFalse(task.isCancelled)
+
+    model.onDisappear()
+    XCTAssertTrue(task.isCancelled)
+    XCTAssertNil(model.loadingTask)
+    try await task.value
+
+    guard case .placeholder = model.phase else {
+      XCTFail("Phase should be `.placeholder`.")
+      return
+    }
+
+    model.onAppear()
+    task = try XCTUnwrap(model.loadingTask)
+    try await task.value
+
     guard case .loaded = model.phase else {
       XCTFail("Phase should be `.loaded`.")
       return
