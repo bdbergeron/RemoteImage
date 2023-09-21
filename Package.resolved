@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "stubby",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bdbergeron/Stubby.git",
+      "state" : {
+        "revision" : "04dcfe508ea31e169523598ce5fb2466ee04bcff",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "swift-docc-plugin",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-docc-plugin",

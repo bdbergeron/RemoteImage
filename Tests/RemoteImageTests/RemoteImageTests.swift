@@ -1,10 +1,13 @@
 // Created by Brad Bergeron on 9/1/23.
 
+import Stubby
 import SwiftUI
 import ViewInspector
 import XCTest
 
 @testable import RemoteImage
+
+// MARK: - RemoteImageTests
 
 @MainActor
 final class RemoteImageTests: XCTestCase {
@@ -12,24 +15,15 @@ final class RemoteImageTests: XCTestCase {
   // MARK: Internal
 
   override func setUp() {
-    cache = .testCache
-    let configuration = URLSessionConfiguration.default
-    configuration.urlCache = cache
-    configuration.protocolClasses = [MockURLProtocol.self]
-    urlSession = URLSession(configuration: configuration)
-  }
-
-  override func tearDown() async throws {
-    MockURLProtocol.resetRequestHandler()
-    try await cache.clear()
+    urlSession = createURLSession()
   }
 
   func test_initWithURLSession_createsViewModelWithDefaults() throws {
-    var view = RemoteImage(url: .cuteDoggo)
+    var view = RemoteImage(url: .cuteDoggoPicture)
 
     let expectation = view.on(\.didAppear) { inspectable in
       let viewModel = try inspectable.actualView().model
-      viewModel.validateDefaultValues(url: .cuteDoggo)
+      viewModel.validateDefaultValues(url: .cuteDoggoPicture)
     }
 
     ViewHosting.host(view: view)
@@ -37,7 +31,7 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_usesEmptyPlaceholderImage() throws {
-    var view = RemoteImage(url: .cuteDoggo, urlSession: urlSession)
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession)
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
@@ -51,9 +45,8 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_usesLoadedImage() async throws {
-    try MockURLProtocol.configureRequestHandler(with: .cuteDoggo)
-    let expectedImage = try await urlSession.fetchAndCacheImage(from: .cuteDoggo)
-    var view = RemoteImage(url: .cuteDoggo, urlSession: urlSession)
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession)
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
@@ -66,7 +59,7 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_contentAndPlaceholder_showsPlaceholder() throws {
-    var view = RemoteImage(url: .cuteDoggo, urlSession: urlSession) { image in
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
       image
     } placeholder: {
       ProgressView()
@@ -82,9 +75,8 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithURLSession_contentAndPlaceholder_showsLoadedImage() async throws {
-    try MockURLProtocol.configureRequestHandler(with: .cuteDoggo)
-    let expectedImage = try await urlSession.fetchAndCacheImage(from: .cuteDoggo)
-    var view = RemoteImage(url: .cuteDoggo, urlSession: urlSession) { image in
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
       image
     } placeholder: {
       ProgressView()
@@ -101,7 +93,8 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithCache_usesEmptyPlaceholderImage() throws {
-    var view = RemoteImage(url: .cuteDoggo, cache: cache)
+    let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache)
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
@@ -115,9 +108,13 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithCache_usesLoadedImage() async throws {
-    try MockURLProtocol.configureRequestHandler(with: .cuteDoggo)
-    let expectedImage = try await urlSession.fetchAndCacheImage(from: .cuteDoggo)
-    var view = RemoteImage(url: .cuteDoggo, cache: cache)
+    let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.urlCache = cache
+    let urlSession = createURLSession(configuration: configuration)
+
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache)
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
@@ -130,7 +127,9 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithCache_contentAndPlaceholder_showsPlaceholder() throws {
-    var view = RemoteImage(url: .cuteDoggo, cache: cache) { image in
+    let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
+
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
       image
     } placeholder: {
       ProgressView()
@@ -146,9 +145,13 @@ final class RemoteImageTests: XCTestCase {
   }
 
   func test_initWithCache_contentAndPlaceholder_showsLoadedImage() async throws {
-    try MockURLProtocol.configureRequestHandler(with: .cuteDoggo)
-    let expectedImage = try await urlSession.fetchAndCacheImage(from: .cuteDoggo)
-    var view = RemoteImage(url: .cuteDoggo, cache: cache) { image in
+    let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.urlCache = cache
+    let urlSession = createURLSession(configuration: configuration)
+
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
       image
     } placeholder: {
       ProgressView()
@@ -166,7 +169,12 @@ final class RemoteImageTests: XCTestCase {
 
   // MARK: Private
 
-  private var cache: URLCache!
   private var urlSession: URLSession!
+
+  private func createURLSession(configuration: URLSessionConfiguration = .ephemeral) -> URLSession {
+    .stubbed(
+      responseProvider: RemoteImageStubbedURL.self,
+      configuration: configuration)
+  }
 
 }
