@@ -1,5 +1,6 @@
 // Created by Brad Bergeron on 8/31/23.
 
+import OSLog
 import Stubby
 import SwiftUI
 import XCTest
@@ -28,7 +29,11 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_cachedImage_returnsNilIfSkipCache() {
-    let model = RemoteImageViewModel(url: nil, urlSession: urlSession, skipCache: true)
+    let model = RemoteImageViewModel(
+      url: nil, 
+      urlSession: urlSession,
+      configuration: .init(
+        skipCache: true))
     XCTAssertNil(model.cachedImage)
   }
 
@@ -54,27 +59,40 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_skipsLoadIfPhaseIsAlreadyLoaded() async throws {
-    try await urlSession.fetchImage(from: .cuteDoggoPicture)
     let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
-    model.onAppear()
-    guard case .loaded = model.phase else {
-      XCTFail("Initial phase should be `.loaded`.")
+    guard case .placeholder = model.phase else {
+      XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    await model.loadImageIfNeeded()
+
+    try await urlSession.fetchImage(from: .cuteDoggoPicture)
+
+    model.onAppear()
+    XCTAssertNil(model.loadingTask)
+    guard case .loaded = model.phase else {
+      XCTFail("Phase should be `.loaded`.")
+      return
+    }
+    
+    model.onAppear()
+    XCTAssertNil(model.loadingTask)
     guard case .loaded = model.phase else {
       XCTFail("Phase should still be `.loaded`.")
       return
     }
   }
 
-  func test_loadImage_skipsLoadIfNoURL() async {
+  func test_loadImage_skipsLoadIfNoURL() async throws {
     let model = RemoteImageViewModel(url: nil)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    await model.loadImageIfNeeded()
+    
+    model.onAppear()
+    let task = try XCTUnwrap(model.loadingTask)
+    try await task.value
+
     guard case .placeholder = model.phase else {
       XCTFail("Phase should still be `.placeholder`.")
       return
@@ -87,7 +105,11 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    await model.loadImageIfNeeded()
+
+    model.onAppear()
+    let task = try XCTUnwrap(model.loadingTask)
+    try await task.value
+
     guard case .failure(let error) = model.phase else {
       XCTFail("Phase should be `.failure`.")
       return
@@ -98,27 +120,88 @@ final class RemoteImageViewModelTests: XCTestCase {
     }
   }
 
-  func test_loadImage_succeedsAnimated() async throws {
+  func test_loadImage_succeedsWithLoadedImage_animated() async throws {
     let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    await model.loadImageIfNeeded()
+    
+    model.onAppear()
+    let task = try XCTUnwrap(model.loadingTask)
+    try await task.value
+
     guard case .loaded = model.phase else {
       XCTFail("Phase should be `.loaded`.")
       return
     }
   }
 
-  func test_loadImage_succeedsNotAnimated() async throws {
+  func test_loadImage_succeedsWithCachedImage_notAnimated() async throws {
     let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
     guard case .placeholder = model.phase else {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
+
     try await urlSession.fetchImage(from: .cuteDoggoPicture)
-    await model.loadImageIfNeeded()
+    
+    model.onAppear()
+    XCTAssertNil(model.loadingTask)
+
+    guard case .loaded = model.phase else {
+      XCTFail("Phase should be `.loaded`.")
+      return
+    }
+  }
+
+  func test_loadImage_stopsLoadingIfCancelled() async throws {
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
+    guard case .placeholder = model.phase else {
+      XCTFail("Initial phase should be `.placeholder`.")
+      return
+    }
+
+    model.onAppear()
+    let task = try XCTUnwrap(model.loadingTask)
+    XCTAssertFalse(task.isCancelled)
+
+    model.onDisappear()
+    XCTAssertTrue(task.isCancelled)
+    XCTAssertNil(model.loadingTask)
+    try await task.value
+
+    guard case .placeholder = model.phase else {
+      XCTFail("Phase should be `.placeholder`.")
+      return
+    }
+  }
+
+  func test_loadImage_loadsIfPreviouslyCancelled() async throws {
+    let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
+    guard case .placeholder = model.phase else {
+      XCTFail("Initial phase should be `.placeholder`.")
+      return
+    }
+
+    model.onAppear()
+    var task = try XCTUnwrap(model.loadingTask)
+    XCTAssertFalse(task.isCancelled)
+
+    model.onDisappear()
+    XCTAssertTrue(task.isCancelled)
+    XCTAssertNil(model.loadingTask)
+    try await task.value
+
+    guard case .placeholder = model.phase else {
+      XCTFail("Phase should be `.placeholder`.")
+      return
+    }
+
+    model.onAppear()
+    task = try XCTUnwrap(model.loadingTask)
+    try await task.value
+
     guard case .loaded = model.phase else {
       XCTFail("Phase should be `.loaded`.")
       return
