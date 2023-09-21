@@ -1,5 +1,6 @@
 // Created by Brad Bergeron on 8/31/23.
 
+import OSLog
 import SwiftUI
 
 // MARK: - RemoteImageConfiguration
@@ -15,17 +16,22 @@ public struct RemoteImageConfiguration {
   ///   - scale: The scale to use for the image. The default is `1`. Set a different value when loading images designed for higher resolution displays.
   ///     For example, set a value of `2` for an image that you would name with the `@2x` suffix if stored in a file on disk.
   ///   - transaction: The transaction to use when the phase changes. Default is an empty `Transaction`.
-  ///   - disableTransactionWithCachedResponse: Whether or not to disable the ``transaction`` when a cached image is returned. Defaults to `true`.
+  ///   - disableTransactionWithCachedResponse: Whether or not to disable the ``transaction`` when a cached image is returned.
+  ///     Defaults to `true`.
+  ///   - logger: An optional `Logger` instance that will be used internally. Defaults to one that utilizes the "io.github.bdbergeron.RemoteImage" subsystem
+  ///     and "RemoteImage" category.
   public init(
     skipCache: Bool = false,
     scale: CGFloat = 1.0,
     transaction: Transaction = .init(),
-    disableTransactionWithCachedResponse: Bool = true)
+    disableTransactionWithCachedResponse: Bool = true,
+    logger: Logger? = .init(subsystem: "io.github.bdbergeron.RemoteImage", category: "RemoteImage"))
   {
     self.skipCache = skipCache
     self.scale = scale
     self.transaction = transaction
     self.disableTransactionWithCachedResponse = disableTransactionWithCachedResponse
+    self.logger = logger
   }
 
   // MARK: Internal
@@ -34,6 +40,7 @@ public struct RemoteImageConfiguration {
   let scale: CGFloat
   let transaction: Transaction
   let disableTransactionWithCachedResponse: Bool
+  let logger: Logger?
 
 }
 
@@ -85,10 +92,7 @@ public struct RemoteImage<Content: View>: View {
       wrappedValue: RemoteImageViewModel(
         url: url,
         urlSession: urlSession,
-        skipCache: configuration.skipCache,
-        scale: configuration.scale,
-        transaction: configuration.transaction,
-        disableTransactionWithCachedResponse: configuration.disableTransactionWithCachedResponse))
+        configuration: configuration))
     self.content = content
   }
 
@@ -221,10 +225,7 @@ extension RemoteImage {
       wrappedValue: RemoteImageViewModel(
         url: url,
         cache: cache,
-        skipCache: configuration.skipCache,
-        scale: configuration.scale,
-        transaction: configuration.transaction,
-        disableTransactionWithCachedResponse: configuration.disableTransactionWithCachedResponse))
+        configuration: configuration))
     self.content = content
   }
 

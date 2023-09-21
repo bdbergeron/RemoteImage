@@ -1,5 +1,6 @@
 // Created by Brad Bergeron on 8/31/23.
 
+import OSLog
 import Stubby
 import SwiftUI
 import XCTest
@@ -28,7 +29,11 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_cachedImage_returnsNilIfSkipCache() {
-    let model = RemoteImageViewModel(url: nil, urlSession: urlSession, skipCache: true)
+    let model = RemoteImageViewModel(
+      url: nil, 
+      urlSession: urlSession,
+      configuration: .init(
+        skipCache: true))
     XCTAssertNil(model.cachedImage)
   }
 

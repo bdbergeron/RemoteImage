@@ -16,31 +16,19 @@ final class RemoteImageViewModel: ObservableObject {
   /// - Parameters:
   ///   - url: Image URL.
   ///   - urlSession: ``URLSession`` instance to use for remote image fetching and caching.
-  ///   - skipCache: Whether or not to bypass the cache. Default is `false`.
-  ///   - scale: Image scale. Default is `1.0`.
-  ///   - transaction: Transaction used during image phase changes. Default is an empty instance.
-  ///   - disableTransactionWithCachedResponse: Whether or not to disable the ``transaction`` when a cached image is returned. 
-  ///     Defaults to `true`.
-  ///   - logger: An optional `Logger` instance that will be used internally. Defaults to one that utilizes the "io.github.bdbergeron.RemoteImage" subsystem
-  ///     and "RemoteImageViewModel" category.
+  ///   - configuration: A ``RemoteImageConfiguration`` object to use for configuring this model.
   init(
     url: URL?,
     urlSession: URLSession = .shared,
-    skipCache: Bool = false,
-    scale: CGFloat = 1.0,
-    transaction: Transaction = .init(),
-    disableTransactionWithCachedResponse: Bool = true,
-    logger: Logger? = .init(
-      subsystem: "io.github.bdbergeron.RemoteImage",
-      category: String(describing: RemoteImageViewModel.self)))
+    configuration: RemoteImageConfiguration = .init())
   {
     self.url = url
     self.urlSession = urlSession
-    self.skipCache = skipCache
-    self.scale = scale
-    self.transaction = transaction
-    self.disableTransactionWithCachedResponse = disableTransactionWithCachedResponse
-    self.logger = logger
+    self.skipCache = configuration.skipCache
+    self.scale = configuration.scale
+    self.transaction = configuration.transaction
+    self.disableTransactionWithCachedResponse = configuration.disableTransactionWithCachedResponse
+    self.logger = configuration.logger
   }
 
   // MARK: Internal
@@ -60,14 +48,17 @@ final class RemoteImageViewModel: ObservableObject {
   /// Whether or not to bypass the cache.
   let skipCache: Bool
 
-  /// Image scale.
+  /// The scale to use for the image.
   let scale: CGFloat
 
-  /// Transaction used during image phase changes.
+  /// The transaction to use when the phase changes.
   let transaction: Transaction
 
   /// Whether or not to disable the ``transaction`` when a cached image is returned.
   let disableTransactionWithCachedResponse: Bool
+  
+  /// An optional `Logger` instance that will be used internally.
+  let logger: Logger?
 
   /// The current image phase.
   @Published private(set) var phase: RemoteImagePhase = .placeholder
@@ -135,8 +126,6 @@ final class RemoteImageViewModel: ObservableObject {
 
   // MARK: Private
 
-  private let logger: Logger?
-
   /// Load the image if needed.
   ///
   /// If the `url` is `nil`, we set ``phase`` to ``RemoteImagePhase/placeholder`` and return. Otherwise, we attempt to load the remote image.
@@ -191,28 +180,20 @@ extension RemoteImageViewModel {
   /// - Parameters:
   ///   - url: Image URL.
   ///   - cache: Cache instance to use.
-  ///   - skipCache: Whether or not to bypass the cache.
-  ///   - scale: Image scale.
-  ///   - transaction: Transaction used during image phase changes.
-  ///   - disableTransactionWithCachedResponse: Whether or not to disable the ``transaction`` when a cached image is returned.
+  ///   - configuration: A ``RemoteImageConfiguration`` object to use for configuring this model.
   convenience init(
     url: URL?,
     cache: URLCache,
-    skipCache: Bool = false,
-    scale: CGFloat = 1.0,
-    transaction: Transaction = .init(),
-    disableTransactionWithCachedResponse: Bool = true)
+    configuration: RemoteImageConfiguration)
   {
-    let configuration = URLSessionConfiguration.default
-    configuration.urlCache = cache
-    let urlSession = URLSession(configuration: configuration)
-
     self.init(
       url: url,
-      urlSession: urlSession,
-      skipCache: skipCache,
-      scale: scale,
-      transaction: transaction,
-      disableTransactionWithCachedResponse: disableTransactionWithCachedResponse)
+      urlSession: URLSession(
+        configuration: {
+          let configuration = URLSessionConfiguration.default
+          configuration.urlCache = cache
+          return configuration
+        }()),
+      configuration: configuration)
   }
 }
