@@ -14,7 +14,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     .package(url: "https://github.com/nalexn/ViewInspector", .upToNextMajor(from: "0.9.7")),
-    .package(url: "git@github.com:bdbergeron/Stubby.git", branch: "main"),
+    .package(url: "https://github.com/bdbergeron/Stubby.git", .upToNextMajor(from: "1.0.0")),
   ],
   targets: [
     .target(

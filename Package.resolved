@@ -3,10 +3,10 @@
     {
       "identity" : "stubby",
       "kind" : "remoteSourceControl",
-      "location" : "git@github.com:bdbergeron/Stubby.git",
+      "location" : "https://github.com/bdbergeron/Stubby.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "28c877a3aa017faea4839db92fded0190c4d00f5"
+        "revision" : "04dcfe508ea31e169523598ce5fb2466ee04bcff",
+        "version" : "1.0.0"
       }
     },
     {

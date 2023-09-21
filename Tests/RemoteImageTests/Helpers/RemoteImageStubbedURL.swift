@@ -29,6 +29,8 @@ extension RemoteImageStubbedURL: RawRepresentable {
       return .invalidImage
     }
   }
+
+  static let allURLs = allCases.map(\.rawValue)
 }
 
 // MARK: StubbyResponseProvider
@@ -38,7 +40,7 @@ extension RemoteImageStubbedURL: StubbyResponseProvider {
   // MARK: Internal
 
   static func respondsTo(request: URLRequest) -> Bool {
-    request.url.map { allCases.map(\.rawValue).contains($0) } ?? false
+    request.url.map(allURLs.contains(_:)) ?? false
   }
 
   static func response(for request: URLRequest) throws -> Result<StubbyResponse, Error> {

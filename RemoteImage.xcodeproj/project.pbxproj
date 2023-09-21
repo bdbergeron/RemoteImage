@@ -12,7 +12,7 @@
 		5C0A6DD82AA23EE00078B6C9 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0A6DD72AA23EE00078B6C9 /* Helpers.swift */; };
 		5C0D6A0B2AB7A1490017092C /* Stubby in Frameworks */ = {isa = PBXBuildFile; productRef = 5C0D6A0A2AB7A1490017092C /* Stubby */; };
 		5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */; };
-		5C6441982AB7BD96008927B8 /* Stubby in Frameworks */ = {isa = PBXBuildFile; productRef = 5C6441972AB7BD96008927B8 /* Stubby */; };
+		5C5964DF2ABCC34A009E4AC8 /* Stubby in Frameworks */ = {isa = PBXBuildFile; productRef = 5C5964DE2ABCC34A009E4AC8 /* Stubby */; };
 		5C6968472AAE4F1800F8BA44 /* URLSessionDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */; };
 		5CAE18C82AB7A8DA00D97A4C /* URLSession+CachedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAE18C72AB7A8DA00D97A4C /* URLSession+CachedData.swift */; };
 		5CE5B0062AB38B4A000F79A8 /* Doggo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CA9A4C92AB265CD00A00232 /* Doggo.jpg */; };
@@ -55,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				5C5964DF2ABCC34A009E4AC8 /* Stubby in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +66,6 @@
 				OBJ_44 /* RemoteImage.framework in Frameworks */,
 				5C0A6DD42AA2356E0078B6C9 /* ViewInspector in Frameworks */,
 				5C0D6A0B2AB7A1490017092C /* Stubby in Frameworks */,
-				5C6441982AB7BD96008927B8 /* Stubby in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +174,9 @@
 			dependencies = (
 			);
 			name = RemoteImage;
+			packageProductDependencies = (
+				5C5964DE2ABCC34A009E4AC8 /* Stubby */,
+			);
 			productName = RemoteImage;
 			productReference = "remoteimage::RemoteImage::Product" /* RemoteImage.framework */;
 			productType = "com.apple.product-type.framework";
@@ -195,7 +198,6 @@
 			packageProductDependencies = (
 				5C0A6DD32AA2356E0078B6C9 /* ViewInspector */,
 				5C0D6A0A2AB7A1490017092C /* Stubby */,
-				5C6441972AB7BD96008927B8 /* Stubby */,
 			);
 			productName = RemoteImageTests;
 			productReference = "remoteimage::RemoteImageTests::Product" /* RemoteImageTests.xctest */;
@@ -222,7 +224,7 @@
 			mainGroup = OBJ_5;
 			packageReferences = (
 				5C0A6DD22AA2356E0078B6C9 /* XCRemoteSwiftPackageReference "ViewInspector" */,
-				5C6441962AB7BD96008927B8 /* XCRemoteSwiftPackageReference "Stubby" */,
+				5C5964DD2ABCC34A009E4AC8 /* XCRemoteSwiftPackageReference "Stubby" */,
 			);
 			productRefGroup = OBJ_13 /* Products */;
 			projectDirPath = "";
@@ -712,12 +714,12 @@
 				minimumVersion = 0.9.8;
 			};
 		};
-		5C6441962AB7BD96008927B8 /* XCRemoteSwiftPackageReference "Stubby" */ = {
+		5C5964DD2ABCC34A009E4AC8 /* XCRemoteSwiftPackageReference "Stubby" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:bdbergeron/Stubby.git";
+			repositoryURL = "https://github.com/bdbergeron/Stubby.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -732,9 +734,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Stubby;
 		};
-		5C6441972AB7BD96008927B8 /* Stubby */ = {
+		5C5964DE2ABCC34A009E4AC8 /* Stubby */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5C6441962AB7BD96008927B8 /* XCRemoteSwiftPackageReference "Stubby" */;
+			package = 5C5964DD2ABCC34A009E4AC8 /* XCRemoteSwiftPackageReference "Stubby" */;
 			productName = Stubby;
 		};
 /* End XCSwiftPackageProductDependency section */
