@@ -59,17 +59,23 @@ final class RemoteImageViewModelTests: XCTestCase {
   }
 
   func test_loadImage_skipsLoadIfPhaseIsAlreadyLoaded() async throws {
-    try await urlSession.fetchImage(from: .cuteDoggoPicture)
     let model = RemoteImageViewModel(url: .cuteDoggoPicture, urlSession: urlSession)
+    guard case .placeholder = model.phase else {
+      XCTFail("Initial phase should be `.placeholder`.")
+      return
+    }
+
+    try await urlSession.fetchImage(from: .cuteDoggoPicture)
+
     model.onAppear()
+    XCTAssertNil(model.loadingTask)
     guard case .loaded = model.phase else {
-      XCTFail("Initial phase should be `.loaded`.")
+      XCTFail("Phase should be `.loaded`.")
       return
     }
     
     model.onAppear()
     XCTAssertNil(model.loadingTask)
-
     guard case .loaded = model.phase else {
       XCTFail("Phase should still be `.loaded`.")
       return

@@ -88,15 +88,14 @@ final class RemoteImageViewModel: ObservableObject {
 
   /// When the view owning this model appears, load the image from either the local cache or remote URL.
   func onAppear() {
+    if case .loaded = phase {
+      return
+    }
     if
       !skipCache,
       let cachedImage
     {
       setPhase(.loaded(cachedImage), animated: false)
-      return
-    }
-    if case .loaded(let image) = phase {
-      setPhase(.loaded(image), animated: false)
       return
     }
     loadingTask = Task {
