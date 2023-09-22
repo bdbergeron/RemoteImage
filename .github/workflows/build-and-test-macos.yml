@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build and Test - macOS
 
 on:
   push:
@@ -25,14 +25,10 @@ jobs:
     name: Build and Test
     runs-on: macos-13
     env:
-      XCODE_PROJECT: RemoteImage.xcodeproj
-      XCODE_SCHEME: RemoteImage
-      COVERAGE_TARGET: RemoteImage
+      PACKAGE_NAME: RemoteImage
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install xcbeautify
-        run: brew install xcbeautify
       - uses: actions/cache@v3
         name: "Cache SPM Dependencies"
         with:
@@ -41,14 +37,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-spm-
       - name: Build
-        run: set -o pipefail && xcodebuild -project ${{ env.XCODE_PROJECT }} -scheme ${{ env.XCODE_SCHEME }} -destination 'platform=iOS Simulator,name=iPhone 14,OS=17.0' -derivedDataPath build -skipPackagePluginValidation build-for-testing | xcbeautify
+        run: swift build
       - name: Test
-        run: set -o pipefail && xcodebuild -project ${{ env.XCODE_PROJECT }} -scheme ${{ env.XCODE_SCHEME }} -destination 'platform=iOS Simulator,name=iPhone 14,OS=17.0' -derivedDataPath build -skipPackagePluginValidation -enableCodeCoverage YES test-without-building | xcbeautify
+        run: swift test --enable-code-coverage
       - name: Prepare Code Coverage
-        run: set -o pipefail && xcrun llvm-cov export -format="lcov" --ignore-filename-regex="Tests|Mocks" -instr-profile=$(find build/Build -name Coverage.profdata) $(find build/Build -name ${{ env.COVERAGE_TARGET }}) > info.lcov
+        run: xcrun llvm-cov export --ignore-filename-regex='(Tests)[/\\].*' -format="lcov" .build/debug/${{ env.PACKAGE_NAME }}PackageTests.xctest/Contents/MacOS/${{ env.PACKAGE_NAME }}PackageTests -instr-profile .build/debug/codecov/default.profdata > info.lcov
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: macOS
           verbose: true
           fail_ci_if_error: true

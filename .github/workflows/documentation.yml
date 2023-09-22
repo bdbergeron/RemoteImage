@@ -24,21 +24,15 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: macos-13
     env:
-      XCODE_PROJECT: RemoteImage.xcodeproj
-      XCODE_SCHEME: RemoteImage
-      XCODE_BUILD_PATH: build
+      TARGET: RemoteImage
       DOCUMENTATION_PATH: docs
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - name: Install xcbeautify
-        run: brew install xcbeautify
       - name: Build documentation
-        run: xcodebuild -project ${{ env.XCODE_PROJECT }} -derivedDataPath ${{ env.XCODE_BUILD_PATH }} -scheme ${{ env.XCODE_SCHEME }} -parallelizeTargets docbuild | xcbeautify
-      - name: Generate static documentation
-        run: $(xcrun --find docc) process-archive transform-for-static-hosting $(find ${{ env.XCODE_BUILD_PATH }} -type d -name '${{ env.XCODE_SCHEME }}.doccarchive') --output-path ${{ env.DOCUMENTATION_PATH }}
+        run: swift package --allow-writing-to-directory ${{ env.DOCUMENTATION_PATH }} generate-documentation --disable-indexing --include-extended-types --output-path ${{ env.DOCUMENTATION_PATH }} --transform-for-static-hosting --target ${{ env.TARGET }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
