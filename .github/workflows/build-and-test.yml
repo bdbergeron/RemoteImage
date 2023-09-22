@@ -8,6 +8,7 @@ on:
       - 'README.md'
       - 'LICENSE'
       - 'docs/**'
+      - '.github/workflows/documentation.yml'
   pull_request:
     branches:
       - main
@@ -15,6 +16,7 @@ on:
       - 'README.md'
       - 'LICENSE'
       - 'docs/**'
+      - '.github/workflows/documentation.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
