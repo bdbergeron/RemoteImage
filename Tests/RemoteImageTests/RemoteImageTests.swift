@@ -36,8 +36,8 @@ final class RemoteImageTests: XCTestCase {
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
       let image = try inspectable.image(0).actualImage()
-      let expectedImage = Image(uiImage: .init())
-      XCTAssertEqual(image, expectedImage)
+      let expectedImage = Image(nativeImage: .init())
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
     ViewHosting.host(view: view)
@@ -51,7 +51,7 @@ final class RemoteImageTests: XCTestCase {
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
       let image = try inspectable.image(0).actualImage()
-      XCTAssertEqual(image.uiImageRepresentation()?.pngData(), expectedImage.uiImageRepresentation()?.pngData())
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
     ViewHosting.host(view: view)
@@ -85,7 +85,7 @@ final class RemoteImageTests: XCTestCase {
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
       let image = try inspectable.image(0).actualImage()
-      XCTAssertEqual(image.uiImageRepresentation()?.pngData(), expectedImage.uiImageRepresentation()?.pngData())
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
     ViewHosting.host(view: view)
@@ -99,8 +99,8 @@ final class RemoteImageTests: XCTestCase {
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
       let image = try inspectable.image(0).actualImage()
-      let expectedImage = Image(uiImage: .init())
-      XCTAssertEqual(image, expectedImage)
+      let expectedImage = Image(nativeImage: .init())
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
     ViewHosting.host(view: view)
@@ -119,7 +119,7 @@ final class RemoteImageTests: XCTestCase {
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
       let image = try inspectable.image(0).actualImage()
-      XCTAssertEqual(image.uiImageRepresentation()?.pngData(), expectedImage.uiImageRepresentation()?.pngData())
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
     ViewHosting.host(view: view)
@@ -160,7 +160,7 @@ final class RemoteImageTests: XCTestCase {
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
       let image = try inspectable.image(0).actualImage()
-      XCTAssertEqual(image.uiImageRepresentation()?.pngData(), expectedImage.uiImageRepresentation()?.pngData())
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
     ViewHosting.host(view: view)
