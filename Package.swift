@@ -6,6 +6,7 @@ import PackageDescription
 let package = Package(
   name: "RemoteImage",
   platforms: [
+    .macOS(.v13),
     .iOS(.v16),
   ],
   products: [

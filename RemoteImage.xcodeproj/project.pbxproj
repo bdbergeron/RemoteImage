@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C08C6162ABE22410020D48B /* Image+PlatformNativeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C08C6142ABE22410020D48B /* Image+PlatformNativeImage.swift */; };
+		5C08C6172ABE22410020D48B /* URLSession+CachedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C08C6152ABE22410020D48B /* URLSession+CachedData.swift */; };
 		5C0A6DD42AA2356E0078B6C9 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 5C0A6DD32AA2356E0078B6C9 /* ViewInspector */; };
 		5C0A6DD62AA2358E0078B6C9 /* RemoteImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0A6DD52AA2358E0078B6C9 /* RemoteImageTests.swift */; };
 		5C0A6DD82AA23EE00078B6C9 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0A6DD72AA23EE00078B6C9 /* Helpers.swift */; };
@@ -14,7 +16,6 @@
 		5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */; };
 		5C5964DF2ABCC34A009E4AC8 /* Stubby in Frameworks */ = {isa = PBXBuildFile; productRef = 5C5964DE2ABCC34A009E4AC8 /* Stubby */; };
 		5C6968472AAE4F1800F8BA44 /* URLSessionDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */; };
-		5CAE18C82AB7A8DA00D97A4C /* URLSession+CachedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAE18C72AB7A8DA00D97A4C /* URLSession+CachedData.swift */; };
 		5CE5B0062AB38B4A000F79A8 /* Doggo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CA9A4C92AB265CD00A00232 /* Doggo.jpg */; };
 		5CF539AA2ABA666A001E98ED /* RemoteImageStubbedURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF539A92ABA666A001E98ED /* RemoteImageStubbedURL.swift */; };
 		OBJ_24 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* RemoteImage.swift */; };
@@ -33,12 +34,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C08C6142ABE22410020D48B /* Image+PlatformNativeImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+PlatformNativeImage.swift"; sourceTree = "<group>"; };
+		5C08C6152ABE22410020D48B /* URLSession+CachedData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URLSession+CachedData.swift"; sourceTree = "<group>"; };
 		5C0A6DD52AA2358E0078B6C9 /* RemoteImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageTests.swift; sourceTree = "<group>"; };
 		5C0A6DD72AA23EE00078B6C9 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageViewModel.swift; sourceTree = "<group>"; };
 		5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataTests.swift; sourceTree = "<group>"; };
 		5CA9A4C92AB265CD00A00232 /* Doggo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Doggo.jpg; sourceTree = "<group>"; };
-		5CAE18C72AB7A8DA00D97A4C /* URLSession+CachedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+CachedData.swift"; sourceTree = "<group>"; };
 		5CF539A92ABA666A001E98ED /* RemoteImageStubbedURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageStubbedURL.swift; sourceTree = "<group>"; };
 		5CF5C4FE2AA258FC00B3FC01 /* RemoteImage.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RemoteImage.xctestplan; sourceTree = "<group>"; };
 		OBJ_12 /* RemoteImageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageViewModelTests.swift; sourceTree = "<group>"; };
@@ -72,6 +74,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C08C6132ABE22410020D48B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5C08C6142ABE22410020D48B /* Image+PlatformNativeImage.swift */,
+				5C08C6152ABE22410020D48B /* URLSession+CachedData.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		5C0D6A092AB7A1490017092C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,7 +164,7 @@
 			children = (
 				OBJ_9 /* RemoteImage.swift */,
 				5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */,
-				5CAE18C72AB7A8DA00D97A4C /* URLSession+CachedData.swift */,
+				5C08C6132ABE22410020D48B /* Extensions */,
 			);
 			name = RemoteImage;
 			path = Sources/RemoteImage;
@@ -254,7 +265,8 @@
 			files = (
 				5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */,
 				OBJ_24 /* RemoteImage.swift in Sources */,
-				5CAE18C82AB7A8DA00D97A4C /* URLSession+CachedData.swift in Sources */,
+				5C08C6172ABE22410020D48B /* URLSession+CachedData.swift in Sources */,
+				5C08C6162ABE22410020D48B /* Image+PlatformNativeImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +338,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -356,7 +368,6 @@
 					"$(inherited)",
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -364,7 +375,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
@@ -395,11 +406,10 @@
 					"@loader_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
@@ -428,7 +438,6 @@
 					"$(inherited)",
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -436,7 +445,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
@@ -465,7 +474,6 @@
 					"$(inherited)",
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -473,7 +481,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
@@ -531,7 +539,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -563,11 +571,10 @@
 					"@loader_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
@@ -622,7 +629,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -654,11 +661,10 @@
 					"@loader_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";

@@ -116,11 +116,11 @@ final class RemoteImageViewModel: ObservableObject {
   /// - Parameter data: Image data.
   /// - Returns: An ``Image`` instance.
   func createImage(with data: Data) throws -> Image {
-    guard let image = UIImage(data: data, scale: scale) else {
-      logger?.error("Could not create a UIImage instance from data (\(data)).")
+    guard let image = PlatformNativeImage(data: data, scale: scale) else {
+      logger?.error("Could not create a \(PlatformNativeImage.self) instance from data (\(data)).")
       throw Error.invalidImageData
     }
-    return Image(uiImage: image)
+    return Image(nativeImage: image)
   }
 
   // MARK: Private

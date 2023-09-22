@@ -4,6 +4,8 @@ import Foundation
 import SwiftUI
 import XCTest
 
+@testable import RemoteImage
+
 extension Data {
   /// A picture of a cute doggo. 🐶
   static var cuteDoggo: Data? {
@@ -45,19 +47,23 @@ extension URLSession {
   @discardableResult func fetchImage(from url: URL) async throws -> Image {
     let (data, _) = try await data(from: url)
     XCTAssertFalse(data.isEmpty)
-    let image = try XCTUnwrap(UIImage(data: data))
-    return Image(uiImage: image)
+    let image = try XCTUnwrap(PlatformNativeImage(data: data))
+    return Image(nativeImage: image)
   }
 }
 
 extension Image {
-  /// Convert this `Image` view to a `UIImage`. Workaround for not having access to the underlying `UIImage` instance itself.
+  /// Get the data representation of this `Image` instance.
   /// - Parameter scale: Display scale to render the image at.
-  /// - Returns: `UIImage` representation of this `Image` view.
-  @MainActor func uiImageRepresentation(scale: CGFloat = 1.0) -> UIImage? {
+  /// - Returns: A `Data` representation of this `Image` view.
+  @MainActor func dataRepresentation(scale: CGFloat = 1.0) -> Data? {
     let renderer = ImageRenderer(content: self)
     renderer.scale = scale
-    return renderer.uiImage
+    #if os(iOS)
+    return renderer.uiImage?.pngData()
+    #elseif os(macOS)
+    return renderer.nsImage?.tiffRepresentation
+    #endif
   }
 }
 

@@ -180,7 +180,7 @@ public struct RemoteImage<Content: View>: View {
     if let image = phase.image {
       image
     } else {
-      Image(uiImage: .init())
+      Image(nativeImage: .init())
     }
   }
 
