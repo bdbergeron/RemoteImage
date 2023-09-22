@@ -36,7 +36,7 @@ jobs:
       - name: Install xcbeautify
         run: brew install xcbeautify
       - name: Build documentation
-        run: xcodebuild -project ${{ env.XCODE_PROJECT }} -derivedDataPath ${{ env.XCODE_BUILD_PATH }} -scheme ${{ env.XCODE_SCHEME }} -parallelizeTargets docbuild | xcbeautfy
+        run: xcodebuild -project ${{ env.XCODE_PROJECT }} -derivedDataPath ${{ env.XCODE_BUILD_PATH }} -scheme ${{ env.XCODE_SCHEME }} -parallelizeTargets docbuild | xcbeautify
       - name: Generate static documentation
         run: $(xcrun --find docc) process-archive transform-for-static-hosting $(find ${{ env.XCODE_BUILD_PATH }} -type d -name '${{ env.XCODE_SCHEME }}.doccarchive') --output-path ${{ env.DOCUMENTATION_PATH }}
       - name: Upload artifact
