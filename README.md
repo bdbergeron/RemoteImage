@@ -17,6 +17,10 @@ Add `RemoteImage` to your project via Swift Package Manager, and add `import Rem
 
 `RemoteImage`'s APIs have been designed to make it super easy to adopt in your app/project. In most cases, it's a simple drop-in replacement for SwiftUI's `AsyncImage`.
 
+Check out the `RemoteImage Demos` app in the Xcode project to see some live exmaples.
+
+![Demos](.github/readme/RemoteImageDemos.gif)
+
 ### Simple Configuration
 
 ```swift
@@ -24,10 +28,10 @@ let imageURL: URL?
 
 /// A simple `RemoteImage` view.
 #Preview("Simple") {
-  RemoteImage(url: imageULRL)
+  RemoteImage(url: imageURL)
 }
 
-/// A simple `RemoteImage` view, with modifier.
+/// A simple `RemoteImage` view with modifier closure.
 #Preview("Simple, with image modifier") {
   RemoteImage(url: imageURL) {
     $0.resizable().scaledToFit()
@@ -36,8 +40,8 @@ let imageURL: URL?
 
 /// A `RemoteImage` view with a custom placeholder.
 #Preview("Custom placeholder") {
-  RemoteImage(url: imageURL) { image in
-    image.resizable().scaledToFit()
+  RemoteImage(url: imageURL) {
+    $0.resizable().scaledToFit()
   } placeholder: {
     ProgressView()
   }
@@ -67,19 +71,17 @@ let imageURL: URL?
 
 ```swift
 let imageURL: URL?
-let urlSession: URLSession
-let imageCache: URLCache
+let urlSession = URLSession(configuration: .ephemeral)
+let imageCache = URLCache(memoryCapacity: 10_000_000, diskCapacity: 0)
 
-/// Image loaded with a custom `URLSession`, skipping the cache, and using a custom
-/// phase transition animation.
+/// Image loaded with a custom `URLSession` and using a custom phase transition animation.
 #Preview("Custom URLSession") {
   RemoteImage(
-    url: .cuteDoggo,
-    urlSession: .shared,
+    url: imageURL,
+    urlSession: urlSession,
     configuration: RemoteImageConfiguration(
-      skipCache: true,
       transaction: Transaction(
-        animation: .easeInOut(duration: 0.5))))
+        animation: .spring(duration: 1.0).delay(0.5))))
   {
     $0.resizable().scaledToFit()
   }
@@ -89,8 +91,8 @@ let imageCache: URLCache
 /// will be constructed using the `URLSessionConfiguration.default` configuration
 /// and the provided cache instance.
 #Preview("Custom URLCache") {
-  RemoteImage(url: .cuteDoggo, cache: .shared) { image in
-    image.resizable().scaledToFit()
+  RemoteImage(url: imageURL, cache: imageCache) {
+    $0.resizable().scaledToFit()
   }
 }
 ```

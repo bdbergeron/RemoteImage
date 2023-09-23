@@ -24,8 +24,7 @@ struct DemosList: View {
     /// A `RemoteImage` view with custom content.
     case customContent = "Custom content"
 
-    /// Image loaded with a custom `URLSession`, skipping the cache, and using a custom
-    /// phase transition animation.
+    /// Image loaded with a custom `URLSession` and using a custom phase transition animation.
     case customURLSession = "Custom URLSession"
 
     /// Image loaded from a custom cache. If the image is not yet cached, a new `URLSession`
@@ -72,7 +71,13 @@ struct DemosList: View {
       }
 
     case .customPlaceholder:
-      RemoteImage(url: nil) { image in
+      RemoteImage(
+        url: .cuteDoggo,
+        configuration: .init(
+          skipCache: true,
+          transaction: .init(
+            animation: .spring(duration: 1.0).delay(0.5))))
+      { image in
         image.resizable().scaledToFit()
       } placeholder: {
         ZStack {
@@ -118,9 +123,8 @@ struct DemosList: View {
     case .customURLSession:
       RemoteImage(
         url: .cuteDoggo,
-        urlSession: .shared,
+        urlSession: URLSession(configuration: .ephemeral),
         configuration: RemoteImageConfiguration(
-          skipCache: true,
           transaction: Transaction(
             animation: .spring(duration: 1.0).delay(0.5))))
       {
@@ -128,8 +132,20 @@ struct DemosList: View {
       }
 
     case .customCache:
-      RemoteImage(url: .cuteDoggo, cache: .shared) { image in
-        image.resizable().scaledToFit()
+      RemoteImage(
+        url: .cuteDoggo,
+        cache: .inMemoryOnly,
+        configuration: RemoteImageConfiguration(
+          transaction: Transaction(
+            animation: .spring(duration: 1.0).delay(0.5))))
+      {
+        $0.resizable().scaledToFit()
+      } placeholder: {
+        ZStack {
+          Color.black.opacity(0.05)
+          ProgressView()
+        }
+        .aspectRatio(1, contentMode: .fit)
       }
     }
   }
@@ -139,6 +155,10 @@ extension URL {
   fileprivate static let cuteDoggo = URL(string: "https://fastly.picsum.photos/id/237/1000/1000.jpg?hmac=5nME13-xBzl4yi2t1tFev6zsf5IWO2-efZAoXEm9ltc")!
 
   fileprivate static let githubRepo = URL(string: "https://github.com/bdbergeron/RemoteImage")!
+}
+
+extension URLCache {
+  static let inMemoryOnly = URLCache(memoryCapacity: 10_000_000, diskCapacity: 0)
 }
 
 #if DEBUG
