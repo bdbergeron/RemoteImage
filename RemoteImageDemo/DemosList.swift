@@ -9,34 +9,9 @@ struct DemosList: View {
 
   // MARK: Internal
 
-  var body: some View {
-    NavigationStack {
-      List {
-        ForEach(Variant.allCases, id: \.rawValue) { variant in
-          NavigationLink(variant.rawValue, value: variant)
-        }
-      }
-      .navigationDestination(for: Variant.self) { variant in
-        List {
-          VStack {
-            content(for: variant)
-          }
-          .frame(maxWidth: .infinity)
-          .listRowInsets(.init())
-          .listRowSeparator(.hidden)
-        }
-        .listStyle(.plain)
-        .listSectionSeparator(.hidden)
-        .navigationTitle(variant.rawValue)
-        .navigationBarTitleDisplayMode(.inline)
-      }
-      .navigationTitle("RemoteImage Demos")
-    }
-  }
+  @State var selectedVariant: Variant?
 
-  // MARK: Private
-
-  private enum Variant: String, CaseIterable {
+  enum Variant: String, CaseIterable {
     /// A simple `RemoteImage` view.
     case simple = "Simple"
 
@@ -59,6 +34,32 @@ struct DemosList: View {
     case customCache = "Custom Cache"
   }
 
+  var body: some View {
+    NavigationStack {
+      List {
+        ForEach(Variant.allCases, id: \.rawValue) { variant in
+          Button(variant.rawValue) {
+            selectedVariant = variant
+          }
+          .tint(.primary)
+        }
+      }
+      .navigationDestination(item: $selectedVariant) { variant in
+        ScrollView {
+          VStack {
+            content(for: variant)
+              .frame(maxWidth: .infinity)
+          }
+        }
+        .navigationTitle(variant.rawValue)
+        .navigationBarTitleDisplayMode(.inline)
+      }
+      .navigationTitle("RemoteImage Demos")
+    }
+  }
+
+  // MARK: Private
+
   @ViewBuilder
   private func content(for variant: Variant) -> some View {
     switch variant {
@@ -74,23 +75,43 @@ struct DemosList: View {
       RemoteImage(url: nil) { image in
         image.resizable().scaledToFit()
       } placeholder: {
-        ProgressView()
+        ZStack {
+          Color.black.opacity(0.05)
+          ProgressView()
+        }
+        .aspectRatio(1, contentMode: .fit)
       }
 
     case .customContent:
-      RemoteImage(url: .githubRepo) { phase in
+      RemoteImage(
+        url: .githubRepo,
+        configuration: RemoteImageConfiguration(
+          transaction: Transaction(
+            animation: .spring(duration: 1.0).delay(0.5))))
+      { phase in
         switch phase {
         case .placeholder:
-          ProgressView()
+          ZStack {
+            Color.black.opacity(0.05)
+            ProgressView()
+          }
+          .aspectRatio(1, contentMode: .fit)
         case .loaded(let image):
           image.resizable().scaledToFit()
         case .failure:
           ZStack {
             Color.yellow.opacity(0.3)
-            Text("Image could not be loaded.")
-              .font(.caption)
-              .foregroundStyle(.secondary)
+            VStack(spacing: 12) {
+              Image(systemName: "photo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 32)
+              Text("Image could not be loaded.")
+            }
+            .font(.headline.weight(.regular))
+            .foregroundStyle(.secondary)
           }
+          .aspectRatio(1, contentMode: .fit)
         }
       }
 
@@ -101,7 +122,7 @@ struct DemosList: View {
         configuration: RemoteImageConfiguration(
           skipCache: true,
           transaction: Transaction(
-            animation: .easeInOut(duration: 0.5))))
+            animation: .spring(duration: 1.0).delay(0.5))))
       {
         $0.resizable().scaledToFit()
       }
