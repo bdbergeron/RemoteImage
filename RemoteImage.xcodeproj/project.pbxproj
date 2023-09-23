@@ -19,6 +19,12 @@
 		5C8E909C2ABF771E00181B57 /* RemoteImage+InitWithCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8E909B2ABF771E00181B57 /* RemoteImage+InitWithCache.swift */; };
 		5C8E909E2ABF775000181B57 /* RemoteImageViewModel+InitWithCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8E909D2ABF775000181B57 /* RemoteImageViewModel+InitWithCache.swift */; };
 		5C8E90A02ABF78E300181B57 /* RemoteImage+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8E909F2ABF78E300181B57 /* RemoteImage+Helpers.swift */; };
+		5C8E90A82ABF7F1D00181B57 /* RemoteImageDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8E90A72ABF7F1D00181B57 /* RemoteImageDemoApp.swift */; };
+		5C8E90AA2ABF7F1D00181B57 /* DemosList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8E90A92ABF7F1D00181B57 /* DemosList.swift */; };
+		5C8E90AC2ABF7F1E00181B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C8E90AB2ABF7F1E00181B57 /* Assets.xcassets */; };
+		5C8E90AF2ABF7F1E00181B57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C8E90AE2ABF7F1E00181B57 /* Preview Assets.xcassets */; };
+		5C8E90B52ABF800E00181B57 /* RemoteImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "remoteimage::RemoteImage::Product" /* RemoteImage.framework */; };
+		5C8E90B62ABF800E00181B57 /* RemoteImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = "remoteimage::RemoteImage::Product" /* RemoteImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5CE5B0062AB38B4A000F79A8 /* Doggo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CA9A4C92AB265CD00A00232 /* Doggo.jpg */; };
 		5CF539AA2ABA666A001E98ED /* RemoteImageStubbedURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF539A92ABA666A001E98ED /* RemoteImageStubbedURL.swift */; };
 		OBJ_24 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* RemoteImage.swift */; };
@@ -34,7 +40,28 @@
 			remoteGlobalIDString = "remoteimage::RemoteImage";
 			remoteInfo = RemoteImage;
 		};
+		5C8E90B72ABF800E00181B57 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "remoteimage::RemoteImage";
+			remoteInfo = RemoteImage;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5C8E90B92ABF800E00181B57 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5C8E90B62ABF800E00181B57 /* RemoteImage.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5C08C6142ABE22410020D48B /* Image+PlatformNativeImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+PlatformNativeImage.swift"; sourceTree = "<group>"; };
@@ -46,6 +73,11 @@
 		5C8E909B2ABF771E00181B57 /* RemoteImage+InitWithCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteImage+InitWithCache.swift"; sourceTree = "<group>"; };
 		5C8E909D2ABF775000181B57 /* RemoteImageViewModel+InitWithCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteImageViewModel+InitWithCache.swift"; sourceTree = "<group>"; };
 		5C8E909F2ABF78E300181B57 /* RemoteImage+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteImage+Helpers.swift"; sourceTree = "<group>"; };
+		5C8E90A52ABF7F1D00181B57 /* RemoteImageDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RemoteImageDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C8E90A72ABF7F1D00181B57 /* RemoteImageDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageDemoApp.swift; sourceTree = "<group>"; };
+		5C8E90A92ABF7F1D00181B57 /* DemosList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemosList.swift; sourceTree = "<group>"; };
+		5C8E90AB2ABF7F1E00181B57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5C8E90AE2ABF7F1E00181B57 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5CA9A4C92AB265CD00A00232 /* Doggo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Doggo.jpg; sourceTree = "<group>"; };
 		5CF539A92ABA666A001E98ED /* RemoteImageStubbedURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageStubbedURL.swift; sourceTree = "<group>"; };
 		5CF5C4FE2AA258FC00B3FC01 /* RemoteImage.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RemoteImage.xctestplan; sourceTree = "<group>"; };
@@ -59,6 +91,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5C8E90A22ABF7F1D00181B57 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C8E90B52ABF800E00181B57 /* RemoteImage.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		OBJ_25 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
@@ -105,6 +145,25 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		5C8E90A62ABF7F1D00181B57 /* RemoteImageDemo */ = {
+			isa = PBXGroup;
+			children = (
+				5C8E90A72ABF7F1D00181B57 /* RemoteImageDemoApp.swift */,
+				5C8E90A92ABF7F1D00181B57 /* DemosList.swift */,
+				5C8E90AB2ABF7F1E00181B57 /* Assets.xcassets */,
+				5C8E90AD2ABF7F1E00181B57 /* Preview Content */,
+			);
+			path = RemoteImageDemo;
+			sourceTree = "<group>";
+		};
+		5C8E90AD2ABF7F1E00181B57 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				5C8E90AE2ABF7F1E00181B57 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		5CA9A4C82AB265CD00A00232 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +198,7 @@
 			children = (
 				"remoteimage::RemoteImage::Product" /* RemoteImage.framework */,
 				"remoteimage::RemoteImageTests::Product" /* RemoteImageTests.xctest */,
+				5C8E90A52ABF7F1D00181B57 /* RemoteImageDemo.app */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -150,6 +210,7 @@
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_10 /* Tests */,
+				5C8E90A62ABF7F1D00181B57 /* RemoteImageDemo */,
 				OBJ_13 /* Products */,
 				OBJ_16 /* LICENSE */,
 				OBJ_18 /* README.md */,
@@ -182,6 +243,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5C8E90A42ABF7F1D00181B57 /* RemoteImageDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C8E90B32ABF7F1E00181B57 /* Build configuration list for PBXNativeTarget "RemoteImageDemo" */;
+			buildPhases = (
+				5C8E90A12ABF7F1D00181B57 /* Sources */,
+				5C8E90A22ABF7F1D00181B57 /* Frameworks */,
+				5C8E90A32ABF7F1D00181B57 /* Resources */,
+				5C8E90B92ABF800E00181B57 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5C8E90B82ABF800E00181B57 /* PBXTargetDependency */,
+			);
+			name = RemoteImageDemo;
+			productName = RemoteImageDemo;
+			productReference = 5C8E90A52ABF7F1D00181B57 /* RemoteImageDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		"remoteimage::RemoteImage" /* RemoteImage */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_20 /* Build configuration list for PBXNativeTarget "RemoteImage" */;
@@ -231,7 +311,13 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftMigration = 9999;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					5C8E90A42ABF7F1D00181B57 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "RemoteImage" */;
 			compatibilityVersion = "Xcode 13.0";
@@ -252,6 +338,7 @@
 			targets = (
 				"remoteimage::RemoteImage" /* RemoteImage */,
 				"remoteimage::RemoteImageTests" /* RemoteImageTests */,
+				5C8E90A42ABF7F1D00181B57 /* RemoteImageDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -265,9 +352,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5C8E90A32ABF7F1D00181B57 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C8E90AF2ABF7F1E00181B57 /* Preview Assets.xcassets in Resources */,
+				5C8E90AC2ABF7F1E00181B57 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5C8E90A12ABF7F1D00181B57 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C8E90AA2ABF7F1D00181B57 /* DemosList.swift in Sources */,
+				5C8E90A82ABF7F1D00181B57 /* RemoteImageDemoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		OBJ_23 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
@@ -297,6 +402,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5C8E90B82ABF800E00181B57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "remoteimage::RemoteImage" /* RemoteImage */;
+			targetProxy = 5C8E90B72ABF800E00181B57 /* PBXContainerItemProxy */;
+		};
 		OBJ_45 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "remoteimage::RemoteImage" /* RemoteImage */;
@@ -340,8 +450,8 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"SWIFT_PACKAGE=1",
 					"DEBUG=1",
+					"TESTING=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -357,7 +467,7 @@
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "$(AVAILABLE_PLATFORMS)";
 				SUPPORTS_MACCATALYST = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE TEST";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TEST";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USE_HEADERMAP = NO;
 			};
@@ -373,6 +483,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = RemoteImage.xcodeproj/RemoteImage_Info.plist;
@@ -390,7 +504,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME = RemoteImage;
@@ -411,6 +525,10 @@
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = RemoteImage.xcodeproj/RemoteImageTests_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -424,7 +542,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME = RemoteImageTests;
@@ -432,6 +550,169 @@
 				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Testing;
+		};
+		5C8E90B02ABF7F1E00181B57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"RemoteImageDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = 5WUK689P3B;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bradbergeron.RemoteImageDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		5C8E90B12ABF7F1E00181B57 /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"RemoteImageDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = 5WUK689P3B;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bradbergeron.RemoteImageDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Testing;
+		};
+		5C8E90B22ABF7F1E00181B57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"RemoteImageDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = 5WUK689P3B;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bradbergeron.RemoteImageDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
 		};
 		OBJ_21 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -443,6 +724,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = RemoteImage.xcodeproj/RemoteImage_Info.plist;
@@ -460,7 +745,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME = RemoteImage;
@@ -480,6 +765,10 @@
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = RemoteImage.xcodeproj/RemoteImage_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -496,7 +785,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME = RemoteImage;
@@ -541,7 +830,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"SWIFT_PACKAGE=1",
 					"DEBUG=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -558,7 +846,7 @@
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "$(AVAILABLE_PLATFORMS)";
 				SUPPORTS_MACCATALYST = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USE_HEADERMAP = NO;
 			};
@@ -576,6 +864,10 @@
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = RemoteImage.xcodeproj/RemoteImageTests_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -589,7 +881,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME = RemoteImageTests;
@@ -630,10 +922,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"SWIFT_PACKAGE=1",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -647,7 +936,7 @@
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "$(AVAILABLE_PLATFORMS)";
 				SUPPORTS_MACCATALYST = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				USE_HEADERMAP = NO;
@@ -666,6 +955,10 @@
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = RemoteImage.xcodeproj/RemoteImageTests_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -679,7 +972,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME = RemoteImageTests;
@@ -691,6 +984,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5C8E90B32ABF7F1E00181B57 /* Build configuration list for PBXNativeTarget "RemoteImageDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C8E90B02ABF7F1E00181B57 /* Debug */,
+				5C8E90B12ABF7F1E00181B57 /* Testing */,
+				5C8E90B22ABF7F1E00181B57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		OBJ_2 /* Build configuration list for PBXProject "RemoteImage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
