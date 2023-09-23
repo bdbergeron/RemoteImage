@@ -1,13 +1,96 @@
 # 🖼️ RemoteImage
 A drop-in alternative to SwiftUI's `AsyncImage`, with support for custom URLSessions, caching, and animated phase changes.
 
-![build](https://github.com/bdbergeron/remoteimage/actions/workflows/build-and-test.yml/badge.svg)
+![build-ios](https://github.com/bdbergeron/remoteimage/actions/workflows/build-and-test-ios.yml/badge.svg)
+![build-macos](https://github.com/bdbergeron/remoteimage/actions/workflows/build-and-test-macos.yml/badge.svg)
 [![codecov](https://codecov.io/gh/bdbergeron/remoteimage/graph/badge.svg?token=1PYkoRXex8)](https://codecov.io/gh/bdbergeron/remoteimage)
 
 ## Getting Started
 
-Add RemoteImage to your project via Swift Package Manager:
+Add `RemoteImage` to your project via Swift Package Manager, and add `import RemoteImage` where you want to use it.
 
 ```swift
 .package(url: "https://github.com/bdbergeron/RemoteImage", from: "1.0.0"),
+```
+
+## Usage
+
+`RemoteImage`'s APIs have been designed to make it super easy to adopt in your app/project. In most cases, it's a simple drop-in replacement for SwiftUI's `AsyncImage`.
+
+### Simple Configuration
+
+```swift
+let imageURL: URL?
+
+/// A simple `RemoteImage` view.
+#Preview("Simple") {
+  RemoteImage(url: imageULRL)
+}
+
+/// A simple `RemoteImage` view, with modifier.
+#Preview("Simple, with image modifier") {
+  RemoteImage(url: imageURL) {
+    $0.resizable().scaledToFit()
+  }
+}
+
+/// A `RemoteImage` view with a custom placeholder.
+#Preview("Custom placeholder") {
+  RemoteImage(url: imageURL) { image in
+    image.resizable().scaledToFit()
+  } placeholder: {
+    ProgressView()
+  }
+}
+
+/// A `RemoteImage` view with custom content.
+#Preview("Custom content") {
+  RemoteImage(url: imageURL) { phase in
+    switch phase {
+    case .placeholder:
+      ProgressView()
+    case .loaded(let image):
+      image.resizable().scaledToFit()
+    case .failure:
+      ZStack {
+        Color.yellow.opacity(0.3)
+        Text("Image could not be loaded.")
+          .font(.caption)
+          .foregroundStyle(.secondary)
+      }
+    }
+  }
+}
+```
+
+### Advanced Configuration
+
+```swift
+let imageURL: URL?
+let urlSession: URLSession
+let imageCache: URLCache
+
+/// Image loaded with a custom `URLSession`, skipping the cache, and using a custom
+/// phase transition animation.
+#Preview("Custom URLSession") {
+  RemoteImage(
+    url: .cuteDoggo,
+    urlSession: .shared,
+    configuration: RemoteImageConfiguration(
+      skipCache: true,
+      transaction: Transaction(
+        animation: .easeInOut(duration: 0.5))))
+  {
+    $0.resizable().scaledToFit()
+  }
+}
+
+/// Image loaded from a custom cache. If the image is not yet cached, a new `URLSession`
+/// will be constructed using the `URLSessionConfiguration.default` configuration
+/// and the provided cache instance.
+#Preview("Custom URLCache") {
+  RemoteImage(url: .cuteDoggo, cache: .shared) { image in
+    image.resizable().scaledToFit()
+  }
+}
 ```
