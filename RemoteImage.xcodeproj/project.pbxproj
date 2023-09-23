@@ -16,6 +16,9 @@
 		5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */; };
 		5C5964DF2ABCC34A009E4AC8 /* Stubby in Frameworks */ = {isa = PBXBuildFile; productRef = 5C5964DE2ABCC34A009E4AC8 /* Stubby */; };
 		5C6968472AAE4F1800F8BA44 /* URLSessionDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */; };
+		5C8E909C2ABF771E00181B57 /* RemoteImage+InitWithCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8E909B2ABF771E00181B57 /* RemoteImage+InitWithCache.swift */; };
+		5C8E909E2ABF775000181B57 /* RemoteImageViewModel+InitWithCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8E909D2ABF775000181B57 /* RemoteImageViewModel+InitWithCache.swift */; };
+		5C8E90A02ABF78E300181B57 /* RemoteImage+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8E909F2ABF78E300181B57 /* RemoteImage+Helpers.swift */; };
 		5CE5B0062AB38B4A000F79A8 /* Doggo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CA9A4C92AB265CD00A00232 /* Doggo.jpg */; };
 		5CF539AA2ABA666A001E98ED /* RemoteImageStubbedURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF539A92ABA666A001E98ED /* RemoteImageStubbedURL.swift */; };
 		OBJ_24 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* RemoteImage.swift */; };
@@ -40,6 +43,9 @@
 		5C0A6DD72AA23EE00078B6C9 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageViewModel.swift; sourceTree = "<group>"; };
 		5C6968462AAE4F1800F8BA44 /* URLSessionDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataTests.swift; sourceTree = "<group>"; };
+		5C8E909B2ABF771E00181B57 /* RemoteImage+InitWithCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteImage+InitWithCache.swift"; sourceTree = "<group>"; };
+		5C8E909D2ABF775000181B57 /* RemoteImageViewModel+InitWithCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteImageViewModel+InitWithCache.swift"; sourceTree = "<group>"; };
+		5C8E909F2ABF78E300181B57 /* RemoteImage+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteImage+Helpers.swift"; sourceTree = "<group>"; };
 		5CA9A4C92AB265CD00A00232 /* Doggo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Doggo.jpg; sourceTree = "<group>"; };
 		5CF539A92ABA666A001E98ED /* RemoteImageStubbedURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageStubbedURL.swift; sourceTree = "<group>"; };
 		5CF5C4FE2AA258FC00B3FC01 /* RemoteImage.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RemoteImage.xctestplan; sourceTree = "<group>"; };
@@ -163,7 +169,10 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_9 /* RemoteImage.swift */,
+				5C8E909F2ABF78E300181B57 /* RemoteImage+Helpers.swift */,
+				5C8E909B2ABF771E00181B57 /* RemoteImage+InitWithCache.swift */,
 				5C4F45572AA4F2C200BB3DC7 /* RemoteImageViewModel.swift */,
+				5C8E909D2ABF775000181B57 /* RemoteImageViewModel+InitWithCache.swift */,
 				5C08C6132ABE22410020D48B /* Extensions */,
 			);
 			name = RemoteImage;
@@ -264,8 +273,11 @@
 			buildActionMask = 0;
 			files = (
 				5C4F45582AA4F2C200BB3DC7 /* RemoteImageViewModel.swift in Sources */,
+				5C8E90A02ABF78E300181B57 /* RemoteImage+Helpers.swift in Sources */,
 				OBJ_24 /* RemoteImage.swift in Sources */,
+				5C8E909C2ABF771E00181B57 /* RemoteImage+InitWithCache.swift in Sources */,
 				5C08C6172ABE22410020D48B /* URLSession+CachedData.swift in Sources */,
+				5C8E909E2ABF775000181B57 /* RemoteImageViewModel+InitWithCache.swift in Sources */,
 				5C08C6162ABE22410020D48B /* Image+PlatformNativeImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
