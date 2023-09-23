@@ -129,13 +129,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		5C0D6A092AB7A1490017092C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		5C6968452AAE4EE300F8BA44 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,7 +207,6 @@
 				OBJ_13 /* Products */,
 				OBJ_16 /* LICENSE */,
 				OBJ_18 /* README.md */,
-				5C0D6A092AB7A1490017092C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
