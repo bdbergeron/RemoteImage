@@ -81,4 +81,30 @@ extension RemoteImage {
         placeholder: placeholder)
     }
   }
+
+  /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback,
+  /// and calling the provided `content` closure to optionally modify the image.
+  /// - Parameters:
+  ///   - url: The URL of the image to display.
+  ///   - cache: Cache to use with the underlying ``URLSession``.
+  ///   - configuration: Configuration options to use. If none is provided, defaults values are used. See ``RemoteImageConfiguration``.
+  ///   - content: A closure that allows for customization/modification of the loaded image.
+  public init<I: View>(
+    url: URL?,
+    cache: URLCache,
+    configuration: RemoteImageConfiguration = .init(),
+    @ViewBuilder content: @escaping (Image) -> I)
+    where
+    Content == _ConditionalContent<I, Image>
+  {
+    self.init(
+      url: url,
+      cache: cache,
+      configuration: configuration)
+    { image in
+      content(image)
+    } placeholder: {
+      Image(nativeImage: .init())
+    }
+  }
 }
