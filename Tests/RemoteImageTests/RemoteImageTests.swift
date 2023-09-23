@@ -58,6 +58,24 @@ final class RemoteImageTests: XCTestCase {
     await fulfillment(of: [expectation])
   }
 
+  func test_initWithURLSession_callsContentClosure() async throws {
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
+      image.resizable().scaledToFit()
+    }
+
+    let expectation = view.on(\.didAppear) { inspectable in
+      XCTAssertEqual(inspectable.count, 1)
+      let imageView = try inspectable.image(0)
+      XCTAssertTrue(try imageView.isScaledToFit())
+      let image = try imageView.actualImage()
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
+    }
+
+    ViewHosting.host(view: view)
+    await fulfillment(of: [expectation])
+  }
+
   func test_initWithURLSession_contentAndPlaceholder_showsPlaceholder() throws {
     var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
       image
@@ -119,6 +137,29 @@ final class RemoteImageTests: XCTestCase {
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
       let image = try inspectable.image(0).actualImage()
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
+    }
+
+    ViewHosting.host(view: view)
+    await fulfillment(of: [expectation])
+  }
+
+  func test_initWithCache_callsContentClosure() async throws {
+    let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.urlCache = cache
+    let urlSession = createURLSession(configuration: configuration)
+
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
+      image.resizable().scaledToFit()
+    }
+
+    let expectation = view.on(\.didAppear) { inspectable in
+      XCTAssertEqual(inspectable.count, 1)
+      let imageView = try inspectable.image(0)
+      XCTAssertTrue(try imageView.isScaledToFit())
+      let image = try imageView.actualImage()
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
