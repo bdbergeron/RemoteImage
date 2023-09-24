@@ -44,7 +44,8 @@ extension URLSession {
   ///   - url: Image URL to fetch.
   ///   - cache: Cache instance to use with URLSession.
   /// - Returns: An ``Image`` instance of the fetched image.
-  @discardableResult func fetchImage(from url: URL) async throws -> Image {
+  @discardableResult 
+  func fetchImage(from url: URL) async throws -> Image {
     let (data, _) = try await data(from: url)
     XCTAssertFalse(data.isEmpty)
     let image = try XCTUnwrap(PlatformNativeImage(data: data))
@@ -56,7 +57,8 @@ extension Image {
   /// Get the data representation of this `Image` instance.
   /// - Parameter scale: Display scale to render the image at.
   /// - Returns: A `Data` representation of this `Image` view.
-  @MainActor func dataRepresentation(scale: CGFloat = 1.0) -> Data? {
+  @MainActor 
+  func dataRepresentation(scale: CGFloat = 1.0) -> Data? {
     let renderer = ImageRenderer(content: self)
     renderer.scale = scale
     #if os(iOS)

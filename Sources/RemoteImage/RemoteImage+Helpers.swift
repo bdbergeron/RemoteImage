@@ -3,12 +3,12 @@
 import SwiftUI
 
 extension RemoteImage {
-  @ViewBuilder
   /// Get an `Image` view for the loaded image, otherwise get an empty placeholder view.
   /// - Parameter phase: The current ``RemoteImagePhase``.
   /// - Returns: If the current `phase` is ``RemoteImagePhase/loaded``, returns an `Image` instance with the loaded image.
   ///   Otherwise, and empty image will be used.
-  static func imageForPhaseOrEmpty(
+  @ViewBuilder
+  static func imageOrEmpty(
     _ phase: RemoteImagePhase)
     -> Content
     where
@@ -21,15 +21,15 @@ extension RemoteImage {
     }
   }
 
-  @ViewBuilder
-  /// Get an `Image` view for the loaded image, otherwise get the placeholder view.
+  /// Get a view for the loaded image. If the image is loading, the placeholder view is shown.
   /// - Parameters:
   ///   - phase: The current ``RemoteImagePhase``.
   ///   - content: A closure that operates on the loaded image, allowing for customization/manipulation of the loaded image.
   ///   - placeholder: A view used as the placeholder.
   /// - Returns: If the current `phase` is ``RemoteImagePhase/loaded``, returns an `Image` instance with the loaded image.
   ///   Otherwise, return the placeholder view.
-  static func imageForPhaseOrPlaceholder<I, P>(
+  @ViewBuilder
+  static func contentForPhase<I, P>(
     _ phase: RemoteImagePhase,
     @ViewBuilder content: @escaping (Image) -> I,
     @ViewBuilder placeholder: @escaping () -> P)
@@ -46,8 +46,7 @@ extension RemoteImage {
     }
   }
 
-  @ViewBuilder
-  /// Get an `Image` view for the loaded image, otherwise get the placeholder view.
+  /// Get a view for the loaded image. If the image is loading, the placeholder view is shown. If the image failed to load, the failure view is shown.
   /// - Parameters:
   ///   - phase: The current ``RemoteImagePhase``.
   ///   - content: A closure that operates on the loaded image, allowing for customization/manipulation of the loaded image.
@@ -55,6 +54,7 @@ extension RemoteImage {
   ///   - failure: A view used if the image fails to load.
   /// - Returns: If the current `phase` is ``RemoteImagePhase/loaded``, returns an `Image` instance with the loaded image.
   ///   Otherwise, return the placeholder view.
+  @ViewBuilder
   static func contentForPhase<I, P, F>(
     _ phase: RemoteImagePhase,
     @ViewBuilder content: @escaping (Image) -> I,

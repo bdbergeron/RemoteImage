@@ -46,11 +46,11 @@ extension RemoteImage {
       url: url,
       cache: cache,
       configuration: configuration,
-      content: Self.imageForPhaseOrEmpty)
+      content: Self.imageOrEmpty)
   }
 
-  /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback,
-  /// and calling the provided `content` closure to optionally modify the image.
+  /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback, and calling the provided `content` closure
+  /// to optionally modify the image.
   ///
   /// A ``URLSession`` will be constructed using the ``URLSessionConfiguration.default`` configuration and the specified ``cache``.
   /// - Parameters:
@@ -70,10 +70,13 @@ extension RemoteImage {
       url: url,
       cache: cache,
       configuration: configuration)
-    { image in
-      content(image)
-    } placeholder: {
-      Image(nativeImage: .init())
+    { phase in
+      Self.contentForPhase(
+        phase,
+        content: content,
+        placeholder: {
+          Image(nativeImage: .init())
+        })
     }
   }
 
@@ -103,7 +106,7 @@ extension RemoteImage {
       cache: cache,
       configuration: configuration)
     { phase in
-      Self.imageForPhaseOrPlaceholder(
+      Self.contentForPhase(
         phase,
         content: content,
         placeholder: placeholder)

@@ -112,11 +112,11 @@ public struct RemoteImage<Content: View>: View {
       url: url,
       urlSession: urlSession,
       configuration: configuration,
-      content: Self.imageForPhaseOrEmpty)
+      content: Self.imageOrEmpty)
   }
 
-  /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback,
-  /// and calling the provided `content` closure to optionally modify the image.
+  /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback, and calling the provided `content` closure
+  /// to optionally modify the image.
   /// - Parameters:
   ///   - url: The URL of the image to display.
   ///   - urlSession: Optional ``URLSession`` to use for fetching the remote image. If not specified, the ``URLSession.shared`` singleton is used.
@@ -134,10 +134,13 @@ public struct RemoteImage<Content: View>: View {
       url: url,
       urlSession: urlSession,
       configuration: configuration)
-    { image in
-      content(image)
-    } placeholder: {
-      Image(nativeImage: .init())
+    { phase in
+      Self.contentForPhase(
+        phase,
+        content: content,
+        placeholder: {
+          Image(nativeImage: .init())
+        })
     }
   }
 
@@ -165,7 +168,7 @@ public struct RemoteImage<Content: View>: View {
       urlSession: urlSession,
       configuration: configuration)
     { phase in
-      Self.imageForPhaseOrPlaceholder(
+      Self.contentForPhase(
         phase,
         content: content,
         placeholder: placeholder)
