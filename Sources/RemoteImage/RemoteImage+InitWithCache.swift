@@ -51,6 +51,8 @@ extension RemoteImage {
 
   /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback,
   /// and calling the provided `content` closure to optionally modify the image.
+  ///
+  /// A ``URLSession`` will be constructed using the ``URLSessionConfiguration.default`` configuration and the specified ``cache``.
   /// - Parameters:
   ///   - url: The URL of the image to display.
   ///   - cache: Cache to use with the underlying ``URLSession``.
@@ -108,7 +110,10 @@ extension RemoteImage {
     }
   }
   
-  /// Initialize a new `RemoteImage` instance using a custom placeholder and failure view.
+  /// Initialize a new `RemoteImage` instance, calling the provided `content` closure to optionally modify the loaded image.
+  /// While the image loads, the `placeholder` is shown. If the image fails to load, `failure` is shown.
+  ///
+  /// A ``URLSession`` will be constructed using the ``URLSessionConfiguration.default`` configuration and the specified ``cache``.
   /// - Parameters:
   ///   - url: The URL of the image to display.
   ///   - cache: Cache to use with the underlying ``URLSession``.

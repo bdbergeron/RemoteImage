@@ -172,7 +172,8 @@ public struct RemoteImage<Content: View>: View {
     }
   }
 
-  /// Initialize a new `RemoteImage` instance using a custom placeholder and failure view.
+  /// Initialize a new `RemoteImage` instance, calling the provided `content` closure to optionally modify the loaded image.
+  /// While the image loads, the `placeholder` is shown. If the image fails to load, `failure` is shown.
   /// - Parameters:
   ///   - url: The URL of the image to display.
   ///   - cache: Cache to use with the underlying ``URLSession``.
