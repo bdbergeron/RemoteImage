@@ -93,31 +93,28 @@ struct DemosList: View {
         configuration: RemoteImageConfiguration(
           transaction: Transaction(
             animation: .spring(duration: 1.0).delay(0.5))))
-      { phase in
-        switch phase {
-        case .placeholder:
-          ZStack {
-            Color.black.opacity(0.05)
-            ProgressView()
-          }
-          .aspectRatio(1, contentMode: .fit)
-        case .loaded(let image):
-          image.resizable().scaledToFit()
-        case .failure:
-          ZStack {
-            Color.yellow.opacity(0.3)
-            VStack(spacing: 12) {
-              Image(systemName: "photo")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 32)
-              Text("Image could not be loaded.")
-            }
-            .font(.headline.weight(.regular))
-            .foregroundStyle(.secondary)
-          }
-          .aspectRatio(1, contentMode: .fit)
+      {
+        $0.resizable().scaledToFit()
+      } placeholder: {
+        ZStack {
+          Color.black.opacity(0.05)
+          ProgressView()
         }
+        .aspectRatio(1, contentMode: .fit)
+      } failure: { _ in
+        ZStack {
+          Color.yellow.opacity(0.3)
+          VStack(spacing: 12) {
+            Image(systemName: "photo")
+              .resizable()
+              .scaledToFit()
+              .frame(width: 32)
+            Text("Image could not be loaded.")
+          }
+          .font(.headline.weight(.regular))
+          .foregroundStyle(.secondary)
+        }
+        .aspectRatio(1, contentMode: .fit)
       }
 
     case .customURLSession:

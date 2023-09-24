@@ -27,42 +27,31 @@ Check out the `RemoteImage Demos` app in the Xcode project to see some live exma
 let imageURL: URL?
 
 /// A simple `RemoteImage` view.
-#Preview("Simple") {
-  RemoteImage(url: imageURL)
-}
+RemoteImage(url: imageURL)
 
 /// A simple `RemoteImage` view with modifier closure.
-#Preview("Simple, with image modifier") {
-  RemoteImage(url: imageURL) {
-    $0.resizable().scaledToFit()
-  }
+RemoteImage(url: imageURL) {
+  $0.resizable().scaledToFit()
 }
 
-/// A `RemoteImage` view with a custom placeholder.
-#Preview("Custom placeholder") {
-  RemoteImage(url: imageURL) {
-    $0.resizable().scaledToFit()
-  } placeholder: {
-    ProgressView()
-  }
+/// A `RemoteImage` view with a custom placeholder view.
+RemoteImage(url: imageURL) {
+  $0.resizable().scaledToFit()
+} placeholder: {
+  ProgressView()
 }
 
-/// A `RemoteImage` view with custom content.
-#Preview("Custom content") {
-  RemoteImage(url: imageURL) { phase in
-    switch phase {
-    case .placeholder:
-      ProgressView()
-    case .loaded(let image):
-      image.resizable().scaledToFit()
-    case .failure:
-      ZStack {
-        Color.yellow.opacity(0.3)
-        Text("Image could not be loaded.")
-          .font(.caption)
-          .foregroundStyle(.secondary)
-      }
-    }
+/// A `RemoteImage` view with custom placeholder and failure views.
+RemoteImage(url: imageURL) {
+  $0.resizable().scaledToFit()
+} placeholder: {
+  ProgressView()
+} failure: { error in
+  ZStack {
+    Color.yellow.opacity(0.3)
+    Text("Image could not be loaded.")
+      .font(.caption)
+      .foregroundStyle(.secondary)
   }
 }
 ```
@@ -75,24 +64,25 @@ let urlSession = URLSession(configuration: .ephemeral)
 let imageCache = URLCache(memoryCapacity: 10_000_000, diskCapacity: 0)
 
 /// Image loaded with a custom `URLSession` and using a custom phase transition animation.
-#Preview("Custom URLSession") {
-  RemoteImage(
-    url: imageURL,
-    urlSession: urlSession,
-    configuration: RemoteImageConfiguration(
-      transaction: Transaction(
-        animation: .spring(duration: 1.0).delay(0.5))))
-  {
-    $0.resizable().scaledToFit()
-  }
+RemoteImage(
+  url: imageURL,
+  urlSession: urlSession,
+  configuration: RemoteImageConfiguration(
+    transaction: Transaction(
+      animation: .spring(duration: 1.0).delay(0.5))))
+{
+  $0.resizable().scaledToFit()
 }
 
 /// Image loaded from a custom cache. If the image is not yet cached, a new `URLSession`
 /// will be constructed using the `URLSessionConfiguration.default` configuration
 /// and the provided cache instance.
-#Preview("Custom URLCache") {
-  RemoteImage(url: imageURL, cache: imageCache) {
-    $0.resizable().scaledToFit()
+RemoteImage(url: imageURL, cache: imageCache) {
+  $0.resizable().scaledToFit()
+} placeholder: {
+  ZStack {
+    Color.black.opacity(0.05)
+    ProgressView()
   }
 }
 ```
