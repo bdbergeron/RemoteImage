@@ -49,6 +49,32 @@ extension RemoteImage {
       content: Self.imageForPhaseOrEmpty)
   }
 
+  /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback,
+  /// and calling the provided `content` closure to optionally modify the image.
+  /// - Parameters:
+  ///   - url: The URL of the image to display.
+  ///   - cache: Cache to use with the underlying ``URLSession``.
+  ///   - configuration: Configuration options to use. If none is provided, defaults values are used. See ``RemoteImageConfiguration``.
+  ///   - content: A closure that allows for customization/modification of the loaded image.
+  public init<I: View>(
+    url: URL?,
+    cache: URLCache,
+    configuration: RemoteImageConfiguration = .init(),
+    @ViewBuilder content: @escaping (Image) -> I)
+    where
+    Content == _ConditionalContent<I, Image>
+  {
+    self.init(
+      url: url,
+      cache: cache,
+      configuration: configuration)
+    { image in
+      content(image)
+    } placeholder: {
+      Image(nativeImage: .init())
+    }
+  }
+
   /// Initialize a new `RemoteImage` instance using a custom placeholder.
   ///
   /// A ``URLSession`` will be constructed using the ``URLSessionConfiguration.default`` configuration and the specified ``cache``.
@@ -81,30 +107,39 @@ extension RemoteImage {
         placeholder: placeholder)
     }
   }
-
-  /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback,
-  /// and calling the provided `content` closure to optionally modify the image.
+  
+  /// Initialize a new `RemoteImage` instance using a custom placeholder and failure view.
   /// - Parameters:
   ///   - url: The URL of the image to display.
   ///   - cache: Cache to use with the underlying ``URLSession``.
   ///   - configuration: Configuration options to use. If none is provided, defaults values are used. See ``RemoteImageConfiguration``.
-  ///   - content: A closure that allows for customization/modification of the loaded image.
-  public init<I: View>(
+  ///   - content: A closure that takes the loaded image as an input, and returns the view to show. You can return the image directly, or modify it as needed
+  ///     before returning it.
+  ///   - placeholder: A closure that returns the view to show until the load operation completes successfully.
+  ///   - failure: A closure that returns a view to show if the image fails to load.
+  public init<I, P, F>(
     url: URL?,
     cache: URLCache,
     configuration: RemoteImageConfiguration = .init(),
-    @ViewBuilder content: @escaping (Image) -> I)
+    @ViewBuilder content: @escaping (Image) -> I,
+    @ViewBuilder placeholder: @escaping () -> P,
+    @ViewBuilder failure: @escaping (Error) -> F)
     where
-    Content == _ConditionalContent<I, Image>
+    Content == _ConditionalContent<_ConditionalContent<P, I>, F>,
+    I: View,
+    P: View,
+    F: View
   {
     self.init(
       url: url,
       cache: cache,
       configuration: configuration)
-    { image in
-      content(image)
-    } placeholder: {
-      Image(nativeImage: .init())
+    { phase in
+      Self.contentForPhase(
+        phase,
+        content: content,
+        placeholder: placeholder,
+        failure: failure)
     }
   }
 }

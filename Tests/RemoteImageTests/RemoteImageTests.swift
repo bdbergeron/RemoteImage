@@ -1,5 +1,6 @@
 // Created by Brad Bergeron on 9/1/23.
 
+import Foundation
 import Stubby
 import SwiftUI
 import ViewInspector
@@ -35,7 +36,7 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      let image = try inspectable.image(0).actualImage()
+      let image = try inspectable.image().actualImage()
       let expectedImage = Image(nativeImage: .init())
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
@@ -50,7 +51,7 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      let image = try inspectable.image(0).actualImage()
+      let image = try inspectable.image().actualImage()
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
@@ -66,7 +67,7 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      let imageView = try inspectable.image(0)
+      let imageView = try inspectable.image()
       XCTAssertTrue(try imageView.isScaledToFit())
       let image = try imageView.actualImage()
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
@@ -102,7 +103,67 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      let image = try inspectable.image(0).actualImage()
+      let image = try inspectable.image().actualImage()
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
+    }
+
+    ViewHosting.host(view: view)
+    await fulfillment(of: [expectation])
+  }
+
+  func test_initWithURLSession_contentPlaceholderFailure_showsPlaceholder() throws {
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
+      image
+    } placeholder: {
+      ProgressView()
+    } failure: { _ in
+      Text("Failed to load image.")
+    }
+
+    let expectation = view.on(\.didAppear) { inspectable in
+      XCTAssertEqual(inspectable.count, 1)
+      XCTAssertNotNil(try inspectable.progressView())
+    }
+
+    ViewHosting.host(view: view)
+    wait(for: [expectation])
+  }
+
+  func test_initWithURLSession_contentPlaceholderFailure_showsFailure() async throws {
+    _ = try await urlSession.data(from: .invalidImage)
+    var view = RemoteImage(url: .invalidImage, urlSession: urlSession) { image in
+      image
+    } placeholder: {
+      ProgressView()
+    } failure: { _ in
+      Text("Failed to load image.")
+    }
+
+    let expectation = view.on(\.didAppear) { inspectable in
+      XCTAssertEqual(inspectable.count, 1)
+      let viewModel = try inspectable.actualView().model
+      viewModel.phase = .failure(URLError(.unsupportedURL))
+      let text = try inspectable.text()
+      XCTAssertEqual(try text.string(), "Failed to load image.")
+    }
+
+    ViewHosting.host(view: view)
+    await fulfillment(of: [expectation])
+  }
+
+  func test_initWithURLSession_contentPlaceholderFailure_showsLoadedImage() async throws {
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
+      image
+    } placeholder: {
+      ProgressView()
+    } failure: { _ in
+      Text("Failed to load image.")
+    }
+
+    let expectation = view.on(\.didAppear) { inspectable in
+      XCTAssertEqual(inspectable.count, 1)
+      let image = try inspectable.image().actualImage()
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
@@ -116,7 +177,7 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      let image = try inspectable.image(0).actualImage()
+      let image = try inspectable.image().actualImage()
       let expectedImage = Image(nativeImage: .init())
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
@@ -136,7 +197,7 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      let image = try inspectable.image(0).actualImage()
+      let image = try inspectable.image().actualImage()
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 
@@ -157,7 +218,7 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      let imageView = try inspectable.image(0)
+      let imageView = try inspectable.image()
       XCTAssertTrue(try imageView.isScaledToFit())
       let image = try imageView.actualImage()
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
@@ -178,7 +239,7 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      XCTAssertNotNil(try inspectable.progressView(0))
+      XCTAssertNotNil(try inspectable.progressView())
     }
 
     ViewHosting.host(view: view)
@@ -200,7 +261,79 @@ final class RemoteImageTests: XCTestCase {
 
     let expectation = view.on(\.didAppear) { inspectable in
       XCTAssertEqual(inspectable.count, 1)
-      let image = try inspectable.image(0).actualImage()
+      let image = try inspectable.image().actualImage()
+      XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
+    }
+
+    ViewHosting.host(view: view)
+    await fulfillment(of: [expectation])
+  }
+
+  func test_initWithCache_contentPlaceholderFailure_showsPlaceholder() throws {
+    let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
+
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
+      image
+    } placeholder: {
+      ProgressView()
+    } failure: { _ in
+      Text("Failed to load image.")
+    }
+
+    let expectation = view.on(\.didAppear) { inspectable in
+      XCTAssertEqual(inspectable.count, 1)
+      XCTAssertNotNil(try inspectable.progressView())
+    }
+
+    ViewHosting.host(view: view)
+    wait(for: [expectation])
+  }
+
+  func test_initWithCache_contentPlaceholderFailure_showsFailure() async throws {
+    let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.urlCache = cache
+    let urlSession = createURLSession(configuration: configuration)
+
+    _ = try await urlSession.data(from: .invalidImage)
+    var view = RemoteImage(url: .invalidImage, cache: cache) { image in
+      image
+    } placeholder: {
+      ProgressView()
+    } failure: { _ in
+      Text("Failed to load image.")
+    }
+
+    let expectation = view.on(\.didAppear) { inspectable in
+      XCTAssertEqual(inspectable.count, 1)
+      let viewModel = try inspectable.actualView().model
+      viewModel.phase = .failure(URLError(.unsupportedURL))
+      let text = try inspectable.text()
+      XCTAssertEqual(try text.string(), "Failed to load image.")
+    }
+
+    ViewHosting.host(view: view)
+    await fulfillment(of: [expectation])
+  }
+
+  func test_initWithCache_contentPlaceholderFailure_showsLoadedImage() async throws {
+    let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.urlCache = cache
+    let urlSession = createURLSession(configuration: configuration)
+
+    let expectedImage = try await urlSession.fetchImage(from: .cuteDoggoPicture)
+    var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
+      image
+    } placeholder: {
+      ProgressView()
+    } failure: { _ in
+      Text("Failed to load image.")
+    }
+
+    let expectation = view.on(\.didAppear) { inspectable in
+      XCTAssertEqual(inspectable.count, 1)
+      let image = try inspectable.image().actualImage()
       XCTAssertEqual(image.dataRepresentation(), expectedImage.dataRepresentation())
     }
 

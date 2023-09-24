@@ -45,4 +45,35 @@ extension RemoteImage {
       placeholder()
     }
   }
+
+  @ViewBuilder
+  /// Get an `Image` view for the loaded image, otherwise get the placeholder view.
+  /// - Parameters:
+  ///   - phase: The current ``RemoteImagePhase``.
+  ///   - content: A closure that operates on the loaded image, allowing for customization/manipulation of the loaded image.
+  ///   - placeholder: A view used as the placeholder.
+  ///   - failure: A view used if the image fails to load.
+  /// - Returns: If the current `phase` is ``RemoteImagePhase/loaded``, returns an `Image` instance with the loaded image.
+  ///   Otherwise, return the placeholder view.
+  static func contentForPhase<I, P, F>(
+    _ phase: RemoteImagePhase,
+    @ViewBuilder content: @escaping (Image) -> I,
+    @ViewBuilder placeholder: @escaping () -> P,
+    @ViewBuilder failure: @escaping (Error) -> F)
+    -> Content
+    where
+    Content == _ConditionalContent<_ConditionalContent<P, I>, F>,
+    I: View,
+    P: View,
+    F: View
+  {
+    switch phase {
+    case .placeholder:
+      placeholder()
+    case .loaded(let image):
+      content(image)
+    case .failure(let error):
+      failure(error)
+    }
+  }
 }

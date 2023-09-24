@@ -61,7 +61,7 @@ final class RemoteImageViewModel: ObservableObject {
   let logger: Logger?
 
   /// The current image phase.
-  @Published private(set) var phase: RemoteImagePhase = .placeholder
+  @Published var phase: RemoteImagePhase = .placeholder
 
   var loadingTask: Task<Void, Swift.Error>?
 
@@ -117,7 +117,7 @@ final class RemoteImageViewModel: ObservableObject {
   /// - Returns: An ``Image`` instance.
   func createImage(with data: Data) throws -> Image {
     guard let image = PlatformNativeImage(data: data, scale: scale) else {
-      logger?.error("Could not create a \(PlatformNativeImage.self) instance from data (\(data)).")
+      logger?.error("Could not create a \(PlatformNativeImage.self) instance from data (\(data, privacy: .public)).")
       throw Error.invalidImageData
     }
     return Image(nativeImage: image)
@@ -134,21 +134,21 @@ final class RemoteImageViewModel: ObservableObject {
       return
     }
     // Perform network fetch.
-    logger?.debug("Loading image from \(url)...")
+    logger?.debug("Loading image from \(url, privacy: .public)...")
     do {
       let (data, _, didLoadFromCache) = try await urlSession.cachedData(from: url, skipCache: skipCache)
       try Task.checkCancellation()
-      logger?.debug("Image loaded from \(url) with \(data.count) bytes. From cache: \(String(describing: didLoadFromCache)).")
+      logger?.debug("Image loaded from \(url) with \(data.count) bytes. From cache: \(String(describing: didLoadFromCache), privacy: .public).")
       let image = try createImage(with: data)
       try Task.checkCancellation()
       let disableAnimation = didLoadFromCache && disableTransactionWithCachedResponse
-      logger?.debug("Setting phase to .loaded for \(url). Animated: \(String(describing: !disableAnimation)).")
+      logger?.debug("Setting phase to .loaded for \(url). Animated: \(String(describing: !disableAnimation), privacy: .public).")
       setPhase(.loaded(image), animated: !disableAnimation)
     } catch URLError.cancelled {
-      logger?.debug("Cancelled loading image from \(url).")
+      logger?.debug("Cancelled loading image from \(url, privacy: .public).")
       setPhase(.placeholder, animated: false)
     } catch {
-      logger?.error("Failed to load image from \(url): \(error.localizedDescription)")
+      logger?.error("Failed to load image from \(url): \(error.localizedDescription, privacy: .public)")
       setPhase(.failure(error), animated: true)
     }
     loadingTask = nil
