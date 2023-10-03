@@ -4,6 +4,7 @@ A drop-in alternative to SwiftUI's `AsyncImage`, with support for custom URLSess
 ![build-ios](https://github.com/bdbergeron/remoteimage/actions/workflows/build-and-test-ios.yml/badge.svg)
 ![build-macos](https://github.com/bdbergeron/remoteimage/actions/workflows/build-and-test-macos.yml/badge.svg)
 [![codecov](https://codecov.io/gh/bdbergeron/remoteimage/graph/badge.svg?token=1PYkoRXex8)](https://codecov.io/gh/bdbergeron/remoteimage)
+[![CodeFactor](https://www.codefactor.io/repository/github/bdbergeron/remoteimage/badge)](https://www.codefactor.io/repository/github/bdbergeron/remoteimage)
 
 ## Getting Started
 
