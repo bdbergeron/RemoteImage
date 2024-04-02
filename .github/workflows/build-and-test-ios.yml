@@ -23,7 +23,7 @@ concurrency:
 jobs:
   build:
     name: Build and Test
-    runs-on: macos-13
+    runs-on: macos-14
     env:
       XCODE_PROJECT: RemoteImage.xcodeproj
       XCODE_SCHEME: RemoteImage
