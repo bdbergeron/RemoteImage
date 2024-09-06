@@ -34,7 +34,7 @@ jobs:
       - name: Build documentation
         run: swift package --allow-writing-to-directory ${{ env.DOCUMENTATION_PATH }} generate-documentation --disable-indexing --include-extended-types --output-path ${{ env.DOCUMENTATION_PATH }} --transform-for-static-hosting --target ${{ env.TARGET }}
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.DOCUMENTATION_PATH }}
       - name: Deploy to GitHub Pages
