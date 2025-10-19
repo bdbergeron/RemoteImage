@@ -136,7 +136,7 @@ final class RemoteImageViewModel: ObservableObject {
     // Perform network fetch.
     logger?.debug("Loading image from \(url, privacy: .public)...")
     do {
-      let (data, _, didLoadFromCache) = try await urlSession.cachedData(from: url, skipCache: skipCache)
+      let (data, _, didLoadFromCache) = try await urlSession.data(from: url, skipCache: skipCache)
       try Task.checkCancellation()
       logger?.debug("Image loaded from \(url) with \(data.count) bytes. From cache: \(String(describing: didLoadFromCache), privacy: .public).")
       let image = try createImage(with: data)

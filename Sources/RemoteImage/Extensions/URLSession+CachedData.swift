@@ -10,7 +10,7 @@ extension URLSession {
   /// - Parameter skipCache: Whether or not to skip loading data from the local cache.
   /// - Returns: A tuple that contains the `Data` from the response, along with the `URLResponse` itself
   /// and whether or not the response was served from the underlying `URLCache`.
-  func cachedData(
+  func data(
     from url: URL,
     skipCache: Bool)
     async throws
