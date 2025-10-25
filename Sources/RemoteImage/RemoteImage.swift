@@ -15,22 +15,22 @@ public struct RemoteImageConfiguration {
   ///   - skipCache: Whether or not to bypass the cache. Default is `false`.
   ///   - scale: The scale to use for the image. The default is `1`. Set a different value when loading images designed for higher resolution displays.
   ///     For example, set a value of `2` for an image that you would name with the `@2x` suffix if stored in a file on disk.
-  ///   - transaction: The transaction to use when the phase changes. Default is an empty `Transaction`.
-  ///   - disableTransactionWithCachedResponse: Whether or not to disable the ``transaction`` when a cached image is returned.
+  ///   - animation: The animation to use when the phase changes. Uses ``Animation/default`` if not specified.
+  ///   - disableAnimationWithCachedResponse: Whether or not to disable the ``animation`` when a cached image is returned.
   ///     Defaults to `true`.
   ///   - logger: An optional `Logger` instance that will be used internally. Defaults to one that utilizes the "io.github.bdbergeron.RemoteImage" subsystem
   ///     and "RemoteImage" category.
   public init(
     skipCache: Bool = false,
     scale: CGFloat = 1.0,
-    transaction: Transaction = .init(),
-    disableTransactionWithCachedResponse: Bool = true,
-    logger: Logger? = .init(subsystem: "io.github.bdbergeron.RemoteImage", category: "RemoteImage"))
-  {
+    animation: Animation = .default,
+    disableAnimationWithCachedResponse: Bool = true,
+    logger: Logger? = .init(subsystem: "io.github.bdbergeron.RemoteImage", category: "RemoteImage")
+  ) {
     self.skipCache = skipCache
     self.scale = scale
-    self.transaction = transaction
-    self.disableTransactionWithCachedResponse = disableTransactionWithCachedResponse
+    self.animation = animation
+    self.disableAnimationWithCachedResponse = disableAnimationWithCachedResponse
     self.logger = logger
   }
 
@@ -38,8 +38,8 @@ public struct RemoteImageConfiguration {
 
   let skipCache: Bool
   let scale: CGFloat
-  let transaction: Transaction
-  let disableTransactionWithCachedResponse: Bool
+  let animation: Animation
+  let disableAnimationWithCachedResponse: Bool
   let logger: Logger?
 
 }
@@ -62,9 +62,9 @@ public enum RemoteImagePhase {
   var image: Image? {
     switch self {
     case .loaded(let image):
-      return image
+      image
     case .placeholder, .failure:
-      return nil
+      nil
     }
   }
 }
@@ -86,14 +86,16 @@ public struct RemoteImage<Content: View>: View {
     url: URL?,
     urlSession: URLSession = .shared,
     configuration: RemoteImageConfiguration = .init(),
-    @ViewBuilder content: @escaping (RemoteImagePhase) -> Content)
-  {
+    @ViewBuilder content: @escaping (RemoteImagePhase) -> Content
+  ) {
     self.init(
       model: RemoteImageViewModel(
         url: url,
         urlSession: urlSession,
-        configuration: configuration),
-      content: content)
+        configuration: configuration
+      ),
+      content: content
+    )
   }
 
   /// Initialize a new `RemoteImage` instance using either the fetched remote image or an empty fallback.
@@ -104,7 +106,8 @@ public struct RemoteImage<Content: View>: View {
   public init(
     url: URL?,
     urlSession: URLSession = .shared,
-    configuration: RemoteImageConfiguration = .init())
+    configuration: RemoteImageConfiguration = .init()
+  )
     where
     Content == _ConditionalContent<Image, Image>
   {
@@ -112,7 +115,8 @@ public struct RemoteImage<Content: View>: View {
       url: url,
       urlSession: urlSession,
       configuration: configuration,
-      content: Self.imageOrEmpty)
+      content: Self.imageOrEmpty
+    )
   }
 
   /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback, and calling the provided `content` closure
@@ -126,21 +130,23 @@ public struct RemoteImage<Content: View>: View {
     url: URL?,
     urlSession: URLSession = .shared,
     configuration: RemoteImageConfiguration = .init(),
-    @ViewBuilder content: @escaping (Image) -> I)
+    @ViewBuilder content: @escaping (Image) -> I
+  )
     where
     Content == _ConditionalContent<I, Image>
   {
     self.init(
       url: url,
       urlSession: urlSession,
-      configuration: configuration)
-    { phase in
+      configuration: configuration
+    ) { phase in
       Self.contentForPhase(
         phase,
         content: content,
         placeholder: {
           Image(nativeImage: .init())
-        })
+        }
+      )
     }
   }
 
@@ -157,7 +163,8 @@ public struct RemoteImage<Content: View>: View {
     urlSession: URLSession = .shared,
     configuration: RemoteImageConfiguration = .init(),
     @ViewBuilder content: @escaping (Image) -> I,
-    @ViewBuilder placeholder: @escaping () -> P)
+    @ViewBuilder placeholder: @escaping () -> P
+  )
     where
     Content == _ConditionalContent<I, P>,
     I: View,
@@ -166,12 +173,13 @@ public struct RemoteImage<Content: View>: View {
     self.init(
       url: url,
       urlSession: urlSession,
-      configuration: configuration)
-    { phase in
+      configuration: configuration
+    ) { phase in
       Self.contentForPhase(
         phase,
         content: content,
-        placeholder: placeholder)
+        placeholder: placeholder
+      )
     }
   }
 
@@ -192,7 +200,8 @@ public struct RemoteImage<Content: View>: View {
     configuration: RemoteImageConfiguration = .init(),
     @ViewBuilder content: @escaping (Image) -> I,
     @ViewBuilder placeholder: @escaping () -> P,
-    @ViewBuilder failure: @escaping (Error) -> F)
+    @ViewBuilder failure: @escaping (Error) -> F
+  )
     where
     Content == _ConditionalContent<_ConditionalContent<P, I>, F>,
     I: View,
@@ -202,14 +211,23 @@ public struct RemoteImage<Content: View>: View {
     self.init(
       url: url,
       urlSession: urlSession,
-      configuration: configuration)
-    { phase in
+      configuration: configuration
+    ) { phase in
       Self.contentForPhase(
         phase,
         content: content,
         placeholder: placeholder,
-        failure: failure)
+        failure: failure
+      )
     }
+  }
+
+  init(
+    model: RemoteImageViewModel,
+    @ViewBuilder content: @escaping (RemoteImagePhase) -> Content
+  ) {
+    _model = .init(wrappedValue: model)
+    self.content = content
   }
 
   // MARK: Public
@@ -227,14 +245,6 @@ public struct RemoteImage<Content: View>: View {
   }
 
   // MARK: Internal
-
-  init(
-    model: RemoteImageViewModel,
-    @ViewBuilder content: @escaping (RemoteImagePhase) -> Content)
-  {
-    _model = .init(wrappedValue: model)
-    self.content = content
-  }
 
   @StateObject var model: RemoteImageViewModel
 
@@ -262,9 +272,10 @@ struct RemoteImage_Previews: PreviewProvider {
 
     remoteImage(
       url: imageURL,
-      skipCache: true)
-      .previewDisplayName("Skip Cache")
-      .previewLayout(.sizeThatFits)
+      skipCache: true
+    )
+    .previewDisplayName("Skip Cache")
+    .previewLayout(.sizeThatFits)
 
     remoteImage(
       url: .init(string: "https://www.example.com"))
@@ -278,9 +289,10 @@ struct RemoteImage_Previews: PreviewProvider {
         ZStack {
           EmptyView()
         }
-      })
-      .previewDisplayName("Empty Placeholder")
-      .previewLayout(.sizeThatFits)
+      }
+    )
+    .previewDisplayName("Empty Placeholder")
+    .previewLayout(.sizeThatFits)
   }
 
   // MARK: Private
@@ -291,14 +303,13 @@ struct RemoteImage_Previews: PreviewProvider {
   private static func remoteImage(
     url: URL?,
     urlSession: URLSession = .shared,
-    skipCache: Bool = false)
-    -> some View
-  {
+    skipCache: Bool = false
+  ) -> some View {
     remoteImage(
       url: url,
       urlSession: urlSession,
-      skipCache: skipCache) 
-    {
+      skipCache: skipCache
+    ) {
       ZStack {
         Color(white: 0.8)
         ProgressView()
@@ -319,17 +330,17 @@ struct RemoteImage_Previews: PreviewProvider {
     urlSession: URLSession = .shared,
     skipCache: Bool = false,
     @ViewBuilder placeholder: @escaping () -> some View = EmptyView.init,
-    @ViewBuilder failure: @escaping (Error) -> some View = { _ in EmptyView() })
-    -> some View
-  {
+    @ViewBuilder failure: @escaping (Error) -> some View = { _ in EmptyView() }
+  ) -> some View {
     GeometryReader { geometry in
       RemoteImage(
         url: url,
         urlSession: urlSession,
         configuration: .init(
           skipCache: skipCache,
-          transaction: .init(animation: .easeIn.delay(0.5))))
-      { phase in
+          animation: .easeIn.delay(0.5)
+        )
+      ) { phase in
         switch phase {
         case .loaded(let image):
           image
@@ -337,8 +348,10 @@ struct RemoteImage_Previews: PreviewProvider {
             .scaledToFill()
             .frame(width: geometry.size.width, height: geometry.size.height)
             .clipped()
+
         case .placeholder:
           placeholder()
+
         case .failure(let error):
           failure(error)
         }

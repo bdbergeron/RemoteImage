@@ -16,21 +16,27 @@ enum RemoteImageStubbedURL: CaseIterable {
 // MARK: RawRepresentable
 
 extension RemoteImageStubbedURL: RawRepresentable {
+
+  // MARK: Lifecycle
+
   init?(rawValue: URL) {
     guard let stubbedURL = Self.allCases.first(where: { $0.rawValue == rawValue }) else { return nil }
     self = stubbedURL
   }
 
+  // MARK: Internal
+
+  static let allURLs = allCases.map(\.rawValue)
+
   var rawValue: URL {
     switch self {
     case .cuteDoggoPicture:
-      return .cuteDoggoPicture
+      .cuteDoggoPicture
     case .invalidImage:
-      return .invalidImage
+      .invalidImage
     }
   }
 
-  static let allURLs = allCases.map(\.rawValue)
 }
 
 // MARK: StubbyResponseProvider
@@ -60,17 +66,19 @@ extension RemoteImageStubbedURL: StubbyResponseProvider {
     get throws {
       switch self {
       case .cuteDoggoPicture:
-        return try .success(
+        try .success(
           .init(
             data: try XCTUnwrap(.cuteDoggo),
             for: rawValue,
-            cacheStoragePolicy: .allowedInMemoryOnly))
+            cacheStoragePolicy: .allowedInMemoryOnly
+          ))
 
       case .invalidImage:
-        return try .success(
+        try .success(
           .init(
             data: try XCTUnwrap("Hello, world!".data(using: .utf8)),
-            for: rawValue))
+            for: rawValue
+          ))
       }
     }
   }

@@ -15,8 +15,8 @@ extension RemoteImageViewModel {
   convenience init(
     url: URL?,
     cache: URLCache,
-    configuration: RemoteImageConfiguration)
-  {
+    configuration: RemoteImageConfiguration
+  ) {
     self.init(
       url: url,
       urlSession: URLSession(
@@ -25,6 +25,7 @@ extension RemoteImageViewModel {
           configuration.urlCache = cache
           return configuration
         }()),
-      configuration: configuration)
+      configuration: configuration
+    )
   }
 }

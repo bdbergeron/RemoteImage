@@ -12,16 +12,16 @@
     {
       "identity" : "swift-docc-plugin",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-docc-plugin",
+      "location" : "https://github.com/swiftlang/swift-docc-plugin",
       "state" : {
-        "revision" : "26ac5758409154cc448d7ab82389c520fa8a8247",
-        "version" : "1.3.0"
+        "revision" : "3e4f133a77e644a5812911a0513aeb7288b07d06",
+        "version" : "1.4.5"
       }
     },
     {
       "identity" : "swift-docc-symbolkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-docc-symbolkit",
+      "location" : "https://github.com/swiftlang/swift-docc-symbolkit",
       "state" : {
         "revision" : "b45d1f2ed151d057b54504d653e0da5552844e34",
         "version" : "1.0.0"
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nalexn/ViewInspector",
       "state" : {
-        "revision" : "07c090d73e0169c342a4ed46e9010be2781eca1e",
-        "version" : "0.9.8"
+        "revision" : "e9a06346499a3a889165647e3f23f8a7b2609a1c",
+        "version" : "0.10.3"
       }
     }
   ],

@@ -10,11 +10,11 @@ typealias PlatformNativeImage = NSImage
 
 extension Image {
   init(nativeImage: PlatformNativeImage) {
-#if os(iOS)
+    #if os(iOS)
     self.init(uiImage: nativeImage)
-#elseif os(macOS)
+    #elseif os(macOS)
     self.init(nsImage: nativeImage)
-#endif
+    #endif
   }
 }
 

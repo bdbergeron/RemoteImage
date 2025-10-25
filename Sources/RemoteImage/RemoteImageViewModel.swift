@@ -20,15 +20,15 @@ final class RemoteImageViewModel: ObservableObject {
   init(
     url: URL?,
     urlSession: URLSession = .shared,
-    configuration: RemoteImageConfiguration = .init())
-  {
+    configuration: RemoteImageConfiguration = .init()
+  ) {
     self.url = url
     self.urlSession = urlSession
-    self.skipCache = configuration.skipCache
-    self.scale = configuration.scale
-    self.transaction = configuration.transaction
-    self.disableTransactionWithCachedResponse = configuration.disableTransactionWithCachedResponse
-    self.logger = configuration.logger
+    skipCache = configuration.skipCache
+    scale = configuration.scale
+    animation = configuration.animation
+    disableAnimationWithCachedResponse = configuration.disableAnimationWithCachedResponse
+    logger = configuration.logger
   }
 
   // MARK: Internal
@@ -52,16 +52,16 @@ final class RemoteImageViewModel: ObservableObject {
   let scale: CGFloat
 
   /// The transaction to use when the phase changes.
-  let transaction: Transaction
+  let animation: Animation
 
-  /// Whether or not to disable the ``transaction`` when a cached image is returned.
-  let disableTransactionWithCachedResponse: Bool
-  
+  /// Whether or not to disable the ``animation`` when a cached image is returned.
+  let disableAnimationWithCachedResponse: Bool
+
   /// An optional `Logger` instance that will be used internally.
   let logger: Logger?
 
   /// The current image phase.
-  @Published var phase: RemoteImagePhase = .placeholder
+  @Published var phase = RemoteImagePhase.placeholder
 
   var loadingTask: Task<Void, Swift.Error>?
 
@@ -136,12 +136,15 @@ final class RemoteImageViewModel: ObservableObject {
     // Perform network fetch.
     logger?.debug("Loading image from \(url, privacy: .public)...")
     do {
-      let (data, _, didLoadFromCache) = try await urlSession.cachedData(from: url, skipCache: skipCache)
+      let (data, _, didLoadFromCache) = try await urlSession.data(from: url, skipCache: skipCache)
       try Task.checkCancellation()
-      logger?.debug("Image loaded from \(url) with \(data.count) bytes. From cache: \(String(describing: didLoadFromCache), privacy: .public).")
+      logger?
+        .debug(
+          "Image loaded from \(url) with \(data.count) bytes. From cache: \(String(describing: didLoadFromCache), privacy: .public)."
+        )
       let image = try createImage(with: data)
       try Task.checkCancellation()
-      let disableAnimation = didLoadFromCache && disableTransactionWithCachedResponse
+      let disableAnimation = didLoadFromCache && disableAnimationWithCachedResponse
       logger?.debug("Setting phase to .loaded for \(url). Animated: \(String(describing: !disableAnimation), privacy: .public).")
       setPhase(.loaded(image), animated: !disableAnimation)
     } catch URLError.cancelled {
@@ -163,7 +166,7 @@ final class RemoteImageViewModel: ObservableObject {
       self.phase = phase
       return
     }
-    withAnimation(transaction.animation) {
+    withAnimation(animation) {
       self.phase = phase
     }
   }

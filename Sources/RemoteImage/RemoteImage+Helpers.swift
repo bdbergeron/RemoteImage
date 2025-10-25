@@ -9,8 +9,7 @@ extension RemoteImage {
   ///   Otherwise, and empty image will be used.
   @ViewBuilder
   static func imageOrEmpty(
-    _ phase: RemoteImagePhase)
-    -> Content
+    _ phase: RemoteImagePhase) -> Content
     where
     Content == _ConditionalContent<Image, Image>
   {
@@ -32,8 +31,8 @@ extension RemoteImage {
   static func contentForPhase<I, P>(
     _ phase: RemoteImagePhase,
     @ViewBuilder content: @escaping (Image) -> I,
-    @ViewBuilder placeholder: @escaping () -> P)
-    -> Content
+    @ViewBuilder placeholder: @escaping () -> P
+  ) -> Content
     where
     Content == _ConditionalContent<I, P>,
     I: View,
@@ -59,8 +58,8 @@ extension RemoteImage {
     _ phase: RemoteImagePhase,
     @ViewBuilder content: @escaping (Image) -> I,
     @ViewBuilder placeholder: @escaping () -> P,
-    @ViewBuilder failure: @escaping (Error) -> F)
-    -> Content
+    @ViewBuilder failure: @escaping (Error) -> F
+  ) -> Content
     where
     Content == _ConditionalContent<_ConditionalContent<P, I>, F>,
     I: View,

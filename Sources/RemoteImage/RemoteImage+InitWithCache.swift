@@ -18,14 +18,16 @@ extension RemoteImage {
     url: URL?,
     cache: URLCache,
     configuration: RemoteImageConfiguration = .init(),
-    @ViewBuilder content: @escaping (RemoteImagePhase) -> Content)
-  {
+    @ViewBuilder content: @escaping (RemoteImagePhase) -> Content
+  ) {
     self.init(
       model: RemoteImageViewModel(
         url: url,
         cache: cache,
-        configuration: configuration),
-      content: content)
+        configuration: configuration
+      ),
+      content: content
+    )
   }
 
   /// Initialize a new `RemoteImage` instance using either the fetched remote image or an empty fallback.
@@ -38,7 +40,8 @@ extension RemoteImage {
   public init(
     url: URL?,
     cache: URLCache,
-    configuration: RemoteImageConfiguration = .init())
+    configuration: RemoteImageConfiguration = .init()
+  )
     where
     Content == _ConditionalContent<Image, Image>
   {
@@ -46,7 +49,8 @@ extension RemoteImage {
       url: url,
       cache: cache,
       configuration: configuration,
-      content: Self.imageOrEmpty)
+      content: Self.imageOrEmpty
+    )
   }
 
   /// Initialize a new `RemoteImage` instance, using either the fetched remote image or an empty fallback, and calling the provided `content` closure
@@ -62,21 +66,23 @@ extension RemoteImage {
     url: URL?,
     cache: URLCache,
     configuration: RemoteImageConfiguration = .init(),
-    @ViewBuilder content: @escaping (Image) -> I)
+    @ViewBuilder content: @escaping (Image) -> I
+  )
     where
     Content == _ConditionalContent<I, Image>
   {
     self.init(
       url: url,
       cache: cache,
-      configuration: configuration)
-    { phase in
+      configuration: configuration
+    ) { phase in
       Self.contentForPhase(
         phase,
         content: content,
         placeholder: {
           Image(nativeImage: .init())
-        })
+        }
+      )
     }
   }
 
@@ -95,7 +101,8 @@ extension RemoteImage {
     cache: URLCache,
     configuration: RemoteImageConfiguration = .init(),
     @ViewBuilder content: @escaping (Image) -> I,
-    @ViewBuilder placeholder: @escaping () -> P)
+    @ViewBuilder placeholder: @escaping () -> P
+  )
     where
     Content == _ConditionalContent<I, P>,
     I: View,
@@ -104,15 +111,16 @@ extension RemoteImage {
     self.init(
       url: url,
       cache: cache,
-      configuration: configuration)
-    { phase in
+      configuration: configuration
+    ) { phase in
       Self.contentForPhase(
         phase,
         content: content,
-        placeholder: placeholder)
+        placeholder: placeholder
+      )
     }
   }
-  
+
   /// Initialize a new `RemoteImage` instance, calling the provided `content` closure to optionally modify the loaded image.
   /// While the image loads, the `placeholder` is shown. If the image fails to load, `failure` is shown.
   ///
@@ -131,7 +139,8 @@ extension RemoteImage {
     configuration: RemoteImageConfiguration = .init(),
     @ViewBuilder content: @escaping (Image) -> I,
     @ViewBuilder placeholder: @escaping () -> P,
-    @ViewBuilder failure: @escaping (Error) -> F)
+    @ViewBuilder failure: @escaping (Error) -> F
+  )
     where
     Content == _ConditionalContent<_ConditionalContent<P, I>, F>,
     I: View,
@@ -141,13 +150,14 @@ extension RemoteImage {
     self.init(
       url: url,
       cache: cache,
-      configuration: configuration)
-    { phase in
+      configuration: configuration
+    ) { phase in
       Self.contentForPhase(
         phase,
         content: content,
         placeholder: placeholder,
-        failure: failure)
+        failure: failure
+      )
     }
   }
 }

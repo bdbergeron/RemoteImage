@@ -14,7 +14,7 @@ final class RemoteImageViewModelTests: XCTestCase {
 
   // MARK: Internal
 
-  override func setUp() {
+  override func setUp() async throws {
     urlSession = .stubbed(responseProvider: RemoteImageStubbedURL.self)
   }
 
@@ -30,10 +30,11 @@ final class RemoteImageViewModelTests: XCTestCase {
 
   func test_cachedImage_returnsNilIfSkipCache() {
     let model = RemoteImageViewModel(
-      url: nil, 
+      url: nil,
       urlSession: urlSession,
       configuration: .init(
-        skipCache: true))
+        skipCache: true)
+    )
     XCTAssertNil(model.cachedImage)
   }
 
@@ -73,7 +74,7 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Phase should be `.loaded`.")
       return
     }
-    
+
     model.onAppear()
     XCTAssertNil(model.loadingTask)
     guard case .loaded = model.phase else {
@@ -88,7 +89,7 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    
+
     model.onAppear()
     let task = try XCTUnwrap(model.loadingTask)
     try await task.value
@@ -126,7 +127,7 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    
+
     model.onAppear()
     let task = try XCTUnwrap(model.loadingTask)
     try await task.value
@@ -145,7 +146,7 @@ final class RemoteImageViewModelTests: XCTestCase {
     }
 
     try await urlSession.fetchImage(from: .cuteDoggoPicture)
-    
+
     model.onAppear()
     XCTAssertNil(model.loadingTask)
 
@@ -210,7 +211,7 @@ final class RemoteImageViewModelTests: XCTestCase {
 
   // MARK: Private
 
-  private var urlSession: URLSession!
+  private var urlSession: URLSession! // swiftlint:disable:this implicitly_unwrapped_optional
 
 }
 
@@ -220,18 +221,8 @@ extension RemoteImageViewModel {
     XCTAssertEqual(urlSession, .shared)
     XCTAssertEqual(skipCache, false)
     XCTAssertEqual(scale, 1.0)
-    XCTAssertEqual(transaction, .init())
-    XCTAssertEqual(disableTransactionWithCachedResponse, true)
+    XCTAssertEqual(animation, .default)
+    XCTAssertEqual(disableAnimationWithCachedResponse, true)
     XCTAssertEqual(cache, .shared)
-  }
-}
-
-// MARK: - Transaction + Equatable
-
-extension Transaction: Equatable {
-  public static func ==(lhs: Transaction, rhs: Transaction) -> Bool {
-    lhs.disablesAnimations == rhs.disablesAnimations
-      && lhs.isContinuous == rhs.isContinuous
-      && lhs.animation == rhs.animation
   }
 }
