@@ -211,7 +211,7 @@ final class RemoteImageViewModelTests: XCTestCase {
 
   // MARK: Private
 
-  private var urlSession: URLSession!
+  private var urlSession: URLSession! // swiftlint:disable:this implicitly_unwrapped_optional
 
 }
 

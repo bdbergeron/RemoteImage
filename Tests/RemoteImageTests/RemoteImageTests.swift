@@ -343,7 +343,7 @@ final class RemoteImageTests: XCTestCase {
 
   // MARK: Private
 
-  private var urlSession: URLSession!
+  private var urlSession: URLSession! // swiftlint:disable:this implicitly_unwrapped_optional
 
   private func createURLSession(configuration: URLSessionConfiguration = .ephemeral) -> URLSession {
     .stubbed(
