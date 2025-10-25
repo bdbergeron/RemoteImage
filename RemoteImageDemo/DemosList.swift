@@ -21,8 +21,8 @@ struct DemosList: View {
     /// A `RemoteImage` view with a custom placeholder.
     case customPlaceholder = "Custom placeholder"
 
-    /// A `RemoteImage` view with custom content.
-    case customContent = "Custom content"
+    /// A `RemoteImage` view with custom failure.
+    case customFailure = "Custom failure"
 
     /// Image loaded with a custom `URLSession` and using a custom phase transition animation.
     case customURLSession = "Custom URLSession"
@@ -63,11 +63,13 @@ struct DemosList: View {
   private func content(for variant: Variant) -> some View {
     switch variant {
     case .simple:
-      RemoteImage(url: .cuteDoggo)
+      RemoteImage(url: .cuteDoggo) {
+        $0.resizable().scaledToFit()
+      }
 
     case .simpleWithModifier:
       RemoteImage(url: .cuteDoggo) {
-        $0.resizable().scaledToFit()
+        $0.resizable().saturation(0.1).scaledToFit()
       }
 
     case .customPlaceholder:
@@ -75,10 +77,9 @@ struct DemosList: View {
         url: .cuteDoggo,
         configuration: .init(
           skipCache: true,
-          transaction: .init(
-            animation: .spring(duration: 1.0).delay(0.5))))
-      { image in
-        image.resizable().scaledToFit()
+          animation: .spring(duration: 1.0).delay(0.5)))
+      {
+        $0.resizable().scaledToFit()
       } placeholder: {
         ZStack {
           Color.black.opacity(0.05)
@@ -87,12 +88,11 @@ struct DemosList: View {
         .aspectRatio(1, contentMode: .fit)
       }
 
-    case .customContent:
+    case .customFailure:
       RemoteImage(
         url: .githubRepo,
-        configuration: RemoteImageConfiguration(
-          transaction: Transaction(
-            animation: .spring(duration: 1.0).delay(0.5))))
+        configuration: .init(
+          animation: .spring(duration: 1.0).delay(0.5)))
       {
         $0.resizable().scaledToFit()
       } placeholder: {
@@ -120,10 +120,10 @@ struct DemosList: View {
     case .customURLSession:
       RemoteImage(
         url: .cuteDoggo,
-        urlSession: URLSession(configuration: .ephemeral),
-        configuration: RemoteImageConfiguration(
-          transaction: Transaction(
-            animation: .spring(duration: 1.0).delay(0.5))))
+        urlSession: .init(
+          configuration: .ephemeral),
+        configuration: .init(
+          animation: .spring(duration: 1.0).delay(0.5)))
       {
         $0.resizable().scaledToFit()
       }
@@ -132,9 +132,8 @@ struct DemosList: View {
       RemoteImage(
         url: .cuteDoggo,
         cache: .inMemoryOnly,
-        configuration: RemoteImageConfiguration(
-          transaction: Transaction(
-            animation: .spring(duration: 1.0).delay(0.5))))
+        configuration: .init(
+          animation: .spring(duration: 1.0).delay(0.5)))
       {
         $0.resizable().scaledToFit()
       } placeholder: {
