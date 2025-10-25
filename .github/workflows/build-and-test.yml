@@ -1,0 +1,131 @@
+name: Build and Test - macOS
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - '.github/workflows/documentation.yml'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - '.github/workflows/documentation.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  COVERAGE_TARGET: RemoteImage
+  SPM_PACKAGE_RESOLVED_PATH: RemoteImage.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+  XCODE_CLONED_SOURCE_PACKAGES_DIR_PATH: build/SourcePackages
+  XCODE_DERIVED_DATA_PATH: build
+  XCODE_PROJECT: RemoteImage.xcodeproj
+  XCODE_RESULT_BUNDLE_PATH: RemoteImage.xcresult
+  XCODE_SCHEME: RemoteImage
+  XCODE_TEST_PRODUCTS_PATH: RemoteImage.xctestproducts
+  XCODE_VERSION: 16.4
+ 
+jobs:
+  build:
+    name: Build and Test
+    runs-on: macos-15
+    strategy:
+      matrix:
+        destination:
+          - platform=macOS
+          - platform=iOS Simulator,name=iPhone 16,OS=18.6
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+      
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      
+      - uses: actions/cache@v4
+        name: "Cache SPM Dependencies"
+        with:
+          path: ${{ env.XCODE_CLONED_SOURCE_PACKAGES_DIR_PATH }}
+          key: spm-dependencies-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles(env.SPM_PACKAGE_RESOLVED_PATH) }}
+          restore-keys: |
+            spm-dependencies-${{ runner.os }}-${{ runner.arch }}-
+      
+      - name: Build
+        run: |
+          set -o pipefail && \
+          xcodebuild build-for-testing \
+          -project "${{ env.XCODE_PROJECT }}" \
+          -scheme "${{ env.XCODE_SCHEME }}" \
+          -destination "${{ matrix.destination }}" \
+          -derivedDataPath "${{ env.XCODE_DERIVED_DATA_PATH }}" \
+          -testProductsPath "${{ env.XCODE_TEST_PRODUCTS_PATH }}" \
+          -skipPackagePluginValidation \
+          | xcbeautify --renderer github-actions
+
+      - name: Save test products
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.XCODE_TEST_PRODUCTS_PATH }}
+          path: ${{ env.XCODE_TEST_PRODUCTS_PATH }}
+      
+      - name: Test
+        id: test
+        run: |  
+          set -o pipefail && \
+          xcodebuild test-without-building \
+          -testProductsPath "${{ env.XCODE_TEST_PRODUCTS_PATH }}" \
+          -destination "${{ matrix.destination }}" \
+          -derivedDataPath "${{ env.XCODE_DERIVED_DATA_PATH }}" \
+          -resultBundlePath "${{ env.XCODE_RESULT_BUNDLE_PATH }}" \
+          -enableCodeCoverage YES \
+          | xcbeautify --renderer github-actions
+
+      - name: Save test results
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.XCODE_RESULT_BUNDLE_PATH }}
+          path: ${{ env.XCODE_RESULT_BUNDLE_PATH }}
+
+      - name: Save logs
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Logs
+          path: ${{ env.XCODE_DERIVED_DATA_PATH }}/Logs
+
+      - name: Save crash logs
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Crash Logs
+          path: ~/Library/Logs/DiagnosticReports
+
+      - name: Prepare Code Coverage
+        id: prepare-codecov-coverage-report
+        if: steps.test.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail && \
+          xcrun llvm-cov export \
+          -format="lcov" \
+          --ignore-filename-regex='(Tests|Mocks)[/\\].*' \
+          -instr-profile=$(find ${{ env.XCODE_DERIVED_DATA_PATH }}/Build -name Coverage.profdata) \
+          $(find ${{ env.XCODE_TEST_PRODUCTS_PATH }}/Binaries -name ${{ env.COVERAGE_TARGET }} -type f -perm +111) > info.lcov
+
+      - name: Upload coverage to Codecov
+        if: steps.prepare-codecov-coverage-report.outcome == 'success'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: macOS
