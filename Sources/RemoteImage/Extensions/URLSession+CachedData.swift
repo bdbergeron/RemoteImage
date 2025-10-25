@@ -1,6 +1,7 @@
 // Created by Brad Bergeron on 9/17/23.
 
 import Foundation
+import os
 
 // MARK: - URLSession + cachedData
 
@@ -21,21 +22,23 @@ extension URLSession {
       cachePolicy: skipCache ? .reloadIgnoringLocalCacheData : .useProtocolCachePolicy)
     let cacheListener = CacheListener()
     let (data, urlResponse) = try await data(for: request, delegate: cacheListener)
-    return (data, urlResponse, cacheListener.didLoadFromCache)
+    let didLoadFromCache = cacheListener.didLoadFromCache.withLock { $0 }
+    return (data, urlResponse, didLoadFromCache)
   }
 }
 
 // MARK: - CacheListener
 
 /// Utility class that serves as a `URLSessionTaskDelegate` for the purpose of capturing response metrics.
-final private class CacheListener: NSObject, URLSessionTaskDelegate {
-  var didLoadFromCache = false
+private final class CacheListener: NSObject, URLSessionTaskDelegate {
+  let didLoadFromCache = OSAllocatedUnfairLock(uncheckedState: false)
 
-  func urlSession(
+  nonisolated func urlSession(
     _: URLSession,
     task _: URLSessionTask,
     didFinishCollecting metrics: URLSessionTaskMetrics)
   {
-    didLoadFromCache = metrics.transactionMetrics.last?.resourceFetchType == .localCache
+    let resourceFetchType = metrics.transactionMetrics.last?.resourceFetchType
+    didLoadFromCache.withLock { $0 = resourceFetchType == .localCache }
   }
 }
