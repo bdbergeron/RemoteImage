@@ -25,6 +25,8 @@ env:
   SPM_PACKAGE_RESOLVED_PATH: RemoteImage.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
   XCODE_CLONED_SOURCE_PACKAGES_DIR_PATH: build/SourcePackages
   XCODE_DERIVED_DATA_PATH: build
+  XCODE_DESTINATION_IOS: platform=iOS Simulator,name=iPhone 16,OS=18.6
+  XCODE_DESTINATION_MACOS: platform=macOS
   XCODE_PROJECT: RemoteImage.xcodeproj
   XCODE_RESULT_BUNDLE_PATH: RemoteImage.xcresult
   XCODE_SCHEME: RemoteImage
@@ -37,9 +39,7 @@ jobs:
     runs-on: macos-15
     strategy:
       matrix:
-        destination:
-          - platform=macOS
-          - platform=iOS Simulator,name=iPhone 16,OS=18.6
+        destination: ['iOS', 'macOS']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -59,6 +59,15 @@ jobs:
           key: spm-dependencies-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles(env.SPM_PACKAGE_RESOLVED_PATH) }}
           restore-keys: |
             spm-dependencies-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Set Xcode destination for run
+        id: set-xcode-destination
+        run: |
+          if [ "${{ matrix.destination }}" == "iOS" ]; then
+            echo "destination=${{ env.XCODE_DESTINATION_IOS }}" >> $GITHUB_OUTPUT
+          elif [ "${{ matrix.destination }}" == "macOS" ]; then
+            echo "destination=${{ env.XCODE_DESTINATION_MACOS }}" >> $GITHUB_OUTPUT
+          fi
       
       - name: Build
         run: |
@@ -66,7 +75,7 @@ jobs:
           xcodebuild build-for-testing \
           -project "${{ env.XCODE_PROJECT }}" \
           -scheme "${{ env.XCODE_SCHEME }}" \
-          -destination "${{ matrix.destination }}" \
+          -destination "${{ steps.set-xcode-destination.outputs.destination }}" \
           -derivedDataPath "${{ env.XCODE_DERIVED_DATA_PATH }}" \
           -testProductsPath "${{ env.XCODE_TEST_PRODUCTS_PATH }}" \
           -skipPackagePluginValidation \
@@ -75,7 +84,7 @@ jobs:
       - name: Save test products
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.XCODE_TEST_PRODUCTS_PATH }}
+          name: ${{ env.XCODE_TEST_PRODUCTS_PATH }}-${{ matrix.destination }}
           path: ${{ env.XCODE_TEST_PRODUCTS_PATH }}
       
       - name: Test
@@ -84,7 +93,7 @@ jobs:
           set -o pipefail && \
           xcodebuild test-without-building \
           -testProductsPath "${{ env.XCODE_TEST_PRODUCTS_PATH }}" \
-          -destination "${{ matrix.destination }}" \
+          -destination "${{ steps.set-xcode-destination.outputs.destination }}" \
           -derivedDataPath "${{ env.XCODE_DERIVED_DATA_PATH }}" \
           -resultBundlePath "${{ env.XCODE_RESULT_BUNDLE_PATH }}" \
           -enableCodeCoverage YES \
@@ -94,7 +103,7 @@ jobs:
         if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.XCODE_RESULT_BUNDLE_PATH }}
+          name: ${{ env.XCODE_RESULT_BUNDLE_PATH }}-${{ matrix.destination }}
           path: ${{ env.XCODE_RESULT_BUNDLE_PATH }}
 
       - name: Save logs
