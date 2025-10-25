@@ -30,10 +30,11 @@ final class RemoteImageViewModelTests: XCTestCase {
 
   func test_cachedImage_returnsNilIfSkipCache() {
     let model = RemoteImageViewModel(
-      url: nil, 
+      url: nil,
       urlSession: urlSession,
       configuration: .init(
-        skipCache: true))
+        skipCache: true)
+    )
     XCTAssertNil(model.cachedImage)
   }
 
@@ -73,7 +74,7 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Phase should be `.loaded`.")
       return
     }
-    
+
     model.onAppear()
     XCTAssertNil(model.loadingTask)
     guard case .loaded = model.phase else {
@@ -88,7 +89,7 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    
+
     model.onAppear()
     let task = try XCTUnwrap(model.loadingTask)
     try await task.value
@@ -126,7 +127,7 @@ final class RemoteImageViewModelTests: XCTestCase {
       XCTFail("Initial phase should be `.placeholder`.")
       return
     }
-    
+
     model.onAppear()
     let task = try XCTUnwrap(model.loadingTask)
     try await task.value
@@ -145,7 +146,7 @@ final class RemoteImageViewModelTests: XCTestCase {
     }
 
     try await urlSession.fetchImage(from: .cuteDoggoPicture)
-    
+
     model.onAppear()
     XCTAssertNil(model.loadingTask)
 

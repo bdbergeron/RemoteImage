@@ -13,13 +13,12 @@ extension URLSession {
   /// and whether or not the response was served from the underlying `URLCache`.
   func data(
     from url: URL,
-    skipCache: Bool)
-    async throws
-    -> (data: Data, urlResponse: URLResponse, didLoadFromCache: Bool)
-  {
+    skipCache: Bool
+  ) async throws -> (data: Data, urlResponse: URLResponse, didLoadFromCache: Bool) {
     let request = URLRequest(
       url: url,
-      cachePolicy: skipCache ? .reloadIgnoringLocalCacheData : .useProtocolCachePolicy)
+      cachePolicy: skipCache ? .reloadIgnoringLocalCacheData : .useProtocolCachePolicy
+    )
     let cacheListener = CacheListener()
     let (data, urlResponse) = try await data(for: request, delegate: cacheListener)
     let didLoadFromCache = cacheListener.didLoadFromCache.withLock { $0 }
@@ -36,8 +35,8 @@ private final class CacheListener: NSObject, URLSessionTaskDelegate {
   nonisolated func urlSession(
     _: URLSession,
     task _: URLSessionTask,
-    didFinishCollecting metrics: URLSessionTaskMetrics)
-  {
+    didFinishCollecting metrics: URLSessionTaskMetrics
+  ) {
     let resourceFetchType = metrics.transactionMetrics.last?.resourceFetchType
     didLoadFromCache.withLock { $0 = resourceFetchType == .localCache }
   }

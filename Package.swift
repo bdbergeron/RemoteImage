@@ -9,7 +9,7 @@ let package = Package(
     .iOS(.v16),
   ],
   products: [
-    .library(name: "RemoteImage", targets: ["RemoteImage"]),
+    .library(name: "RemoteImage", targets: ["RemoteImage"])
   ],
   dependencies: [
     .package(url: "https://github.com/bdbergeron/Stubby", .upToNextMajor(from: "1.0.0")),
@@ -19,7 +19,8 @@ let package = Package(
   targets: [
     .target(
       name: "RemoteImage",
-      dependencies: []),
+      dependencies: []
+    ),
     .testTarget(
       name: "RemoteImageTests",
       dependencies: [
@@ -28,8 +29,9 @@ let package = Package(
         .product(name: "Stubby", package: "Stubby"),
       ],
       resources: [
-        .process("Resources"),
-      ]),
+        .process("Resources")
+      ]
+    ),
   ],
   swiftLanguageVersions: [.v5]
 )

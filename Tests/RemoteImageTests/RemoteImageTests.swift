@@ -19,7 +19,7 @@ final class RemoteImageTests: XCTestCase {
     urlSession = createURLSession()
   }
 
-  func test_initWithURLSession_createsViewModelWithDefaults() throws {
+  func test_initWithURLSession_createsViewModelWithDefaults() {
     var view = RemoteImage(url: .cuteDoggoPicture)
 
     let expectation = view.on(\.didAppear) { inspectable in
@@ -31,7 +31,7 @@ final class RemoteImageTests: XCTestCase {
     wait(for: [expectation])
   }
 
-  func test_initWithURLSession_usesEmptyPlaceholderImage() throws {
+  func test_initWithURLSession_usesEmptyPlaceholderImage() {
     var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession)
 
     let expectation = view.on(\.didAppear) { inspectable in
@@ -77,7 +77,7 @@ final class RemoteImageTests: XCTestCase {
     await fulfillment(of: [expectation])
   }
 
-  func test_initWithURLSession_contentAndPlaceholder_showsPlaceholder() throws {
+  func test_initWithURLSession_contentAndPlaceholder_showsPlaceholder() {
     var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
       image
     } placeholder: {
@@ -111,7 +111,7 @@ final class RemoteImageTests: XCTestCase {
     await fulfillment(of: [expectation])
   }
 
-  func test_initWithURLSession_contentPlaceholderFailure_showsPlaceholder() throws {
+  func test_initWithURLSession_contentPlaceholderFailure_showsPlaceholder() {
     var view = RemoteImage(url: .cuteDoggoPicture, urlSession: urlSession) { image in
       image
     } placeholder: {
@@ -171,7 +171,7 @@ final class RemoteImageTests: XCTestCase {
     await fulfillment(of: [expectation])
   }
 
-  func test_initWithCache_usesEmptyPlaceholderImage() throws {
+  func test_initWithCache_usesEmptyPlaceholderImage() {
     let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
     var view = RemoteImage(url: .cuteDoggoPicture, cache: cache)
 
@@ -228,7 +228,7 @@ final class RemoteImageTests: XCTestCase {
     await fulfillment(of: [expectation])
   }
 
-  func test_initWithCache_contentAndPlaceholder_showsPlaceholder() throws {
+  func test_initWithCache_contentAndPlaceholder_showsPlaceholder() {
     let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
 
     var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
@@ -269,7 +269,7 @@ final class RemoteImageTests: XCTestCase {
     await fulfillment(of: [expectation])
   }
 
-  func test_initWithCache_contentPlaceholderFailure_showsPlaceholder() throws {
+  func test_initWithCache_contentPlaceholderFailure_showsPlaceholder() {
     let cache = URLCache(memoryCapacity: 1_000_000, diskCapacity: 0)
 
     var view = RemoteImage(url: .cuteDoggoPicture, cache: cache) { image in
@@ -348,7 +348,8 @@ final class RemoteImageTests: XCTestCase {
   private func createURLSession(configuration: URLSessionConfiguration = .ephemeral) -> URLSession {
     .stubbed(
       responseProvider: RemoteImageStubbedURL.self,
-      configuration: configuration)
+      configuration: configuration
+    )
   }
 
 }
