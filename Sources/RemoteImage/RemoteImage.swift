@@ -15,22 +15,22 @@ public struct RemoteImageConfiguration {
   ///   - skipCache: Whether or not to bypass the cache. Default is `false`.
   ///   - scale: The scale to use for the image. The default is `1`. Set a different value when loading images designed for higher resolution displays.
   ///     For example, set a value of `2` for an image that you would name with the `@2x` suffix if stored in a file on disk.
-  ///   - transaction: The transaction to use when the phase changes. Default is an empty `Transaction`.
-  ///   - disableTransactionWithCachedResponse: Whether or not to disable the ``transaction`` when a cached image is returned.
+  ///   - animation: The animation to use when the phase changes. Uses ``Animation/default`` if not specified.
+  ///   - disableAnimationWithCachedResponse: Whether or not to disable the ``animation`` when a cached image is returned.
   ///     Defaults to `true`.
   ///   - logger: An optional `Logger` instance that will be used internally. Defaults to one that utilizes the "io.github.bdbergeron.RemoteImage" subsystem
   ///     and "RemoteImage" category.
   public init(
     skipCache: Bool = false,
     scale: CGFloat = 1.0,
-    transaction: Transaction = .init(),
-    disableTransactionWithCachedResponse: Bool = true,
+    animation: Animation = .default,
+    disableAnimationWithCachedResponse: Bool = true,
     logger: Logger? = .init(subsystem: "io.github.bdbergeron.RemoteImage", category: "RemoteImage"))
   {
     self.skipCache = skipCache
     self.scale = scale
-    self.transaction = transaction
-    self.disableTransactionWithCachedResponse = disableTransactionWithCachedResponse
+    self.animation = animation
+    self.disableAnimationWithCachedResponse = disableAnimationWithCachedResponse
     self.logger = logger
   }
 
@@ -38,8 +38,8 @@ public struct RemoteImageConfiguration {
 
   let skipCache: Bool
   let scale: CGFloat
-  let transaction: Transaction
-  let disableTransactionWithCachedResponse: Bool
+  let animation: Animation
+  let disableAnimationWithCachedResponse: Bool
   let logger: Logger?
 
 }
@@ -328,7 +328,7 @@ struct RemoteImage_Previews: PreviewProvider {
         urlSession: urlSession,
         configuration: .init(
           skipCache: skipCache,
-          transaction: .init(animation: .easeIn.delay(0.5))))
+          animation: .easeIn.delay(0.5)))
       { phase in
         switch phase {
         case .loaded(let image):

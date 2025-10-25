@@ -26,8 +26,8 @@ final class RemoteImageViewModel: ObservableObject {
     self.urlSession = urlSession
     self.skipCache = configuration.skipCache
     self.scale = configuration.scale
-    self.transaction = configuration.transaction
-    self.disableTransactionWithCachedResponse = configuration.disableTransactionWithCachedResponse
+    self.animation = configuration.animation
+    self.disableAnimationWithCachedResponse = configuration.disableAnimationWithCachedResponse
     self.logger = configuration.logger
   }
 
@@ -52,11 +52,11 @@ final class RemoteImageViewModel: ObservableObject {
   let scale: CGFloat
 
   /// The transaction to use when the phase changes.
-  let transaction: Transaction
+  let animation: Animation
 
-  /// Whether or not to disable the ``transaction`` when a cached image is returned.
-  let disableTransactionWithCachedResponse: Bool
-  
+  /// Whether or not to disable the ``animation`` when a cached image is returned.
+  let disableAnimationWithCachedResponse: Bool
+
   /// An optional `Logger` instance that will be used internally.
   let logger: Logger?
 
@@ -141,7 +141,7 @@ final class RemoteImageViewModel: ObservableObject {
       logger?.debug("Image loaded from \(url) with \(data.count) bytes. From cache: \(String(describing: didLoadFromCache), privacy: .public).")
       let image = try createImage(with: data)
       try Task.checkCancellation()
-      let disableAnimation = didLoadFromCache && disableTransactionWithCachedResponse
+      let disableAnimation = didLoadFromCache && disableAnimationWithCachedResponse
       logger?.debug("Setting phase to .loaded for \(url). Animated: \(String(describing: !disableAnimation), privacy: .public).")
       setPhase(.loaded(image), animated: !disableAnimation)
     } catch URLError.cancelled {
@@ -163,7 +163,7 @@ final class RemoteImageViewModel: ObservableObject {
       self.phase = phase
       return
     }
-    withAnimation(transaction.animation) {
+    withAnimation(animation) {
       self.phase = phase
     }
   }

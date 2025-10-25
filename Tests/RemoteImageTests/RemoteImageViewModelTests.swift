@@ -220,18 +220,8 @@ extension RemoteImageViewModel {
     XCTAssertEqual(urlSession, .shared)
     XCTAssertEqual(skipCache, false)
     XCTAssertEqual(scale, 1.0)
-    XCTAssertEqual(transaction, .init())
-    XCTAssertEqual(disableTransactionWithCachedResponse, true)
+    XCTAssertEqual(animation, .default)
+    XCTAssertEqual(disableAnimationWithCachedResponse, true)
     XCTAssertEqual(cache, .shared)
-  }
-}
-
-// MARK: - Transaction + Equatable
-
-extension Transaction: Equatable {
-  public static func ==(lhs: Transaction, rhs: Transaction) -> Bool {
-    lhs.disablesAnimations == rhs.disablesAnimations
-      && lhs.isContinuous == rhs.isContinuous
-      && lhs.animation == rhs.animation
   }
 }
