@@ -15,7 +15,7 @@ final class RemoteImageTests: XCTestCase {
 
   // MARK: Internal
 
-  override func setUp() {
+  override func setUp() async throws {
     urlSession = createURLSession()
   }
 

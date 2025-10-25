@@ -15,7 +15,7 @@ extension Data {
   }
 }
 
-extension URL: ExpressibleByStringLiteral {
+extension URL: @retroactive ExpressibleByStringLiteral {
 
   // MARK: Lifecycle
 

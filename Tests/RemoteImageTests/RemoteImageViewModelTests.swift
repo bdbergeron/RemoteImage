@@ -14,7 +14,7 @@ final class RemoteImageViewModelTests: XCTestCase {
 
   // MARK: Internal
 
-  override func setUp() {
+  override func setUp() async throws {
     urlSession = .stubbed(responseProvider: RemoteImageStubbedURL.self)
   }
 

@@ -15,14 +15,14 @@ final class URLSessionDataTests: XCTestCase {
     urlSession = .stubbed(responseProvider: RemoteImageStubbedURL.self)
   }
 
-  func test_dataWithCacheLoadInfo_skipCacheFalse_usesProtocolCachePolicy() async throws {
-    try await urlSession.fetchImage(from: .cuteDoggoPicture)
+  func test_dataWithCacheLoadInfo_skipCache_false() async throws {
+    _ = try await urlSession.data(from: .cuteDoggoPicture)
     let (_, _, didLoadFromCache) = try await urlSession.data(from: .cuteDoggoPicture, skipCache: false)
     XCTAssertEqual(didLoadFromCache, true)
   }
 
-  func test_dataWithCacheLoadInfo_skipCacheTrue_usesReloadIgnoringLocalCacheData() async throws {
-    try await urlSession.fetchImage(from: .cuteDoggoPicture)
+  func test_dataWithCacheLoadInfo_skipCache_true() async throws {
+    _ = try await urlSession.data(from: .cuteDoggoPicture)
     let (_, _, didLoadFromCache) = try await urlSession.data(from: .cuteDoggoPicture, skipCache: true)
     XCTAssertEqual(didLoadFromCache, false)
   }
