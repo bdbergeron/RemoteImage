@@ -125,7 +125,8 @@ jobs:
           -format="lcov" \
           --ignore-filename-regex='(Tests|Mocks)[/\\].*' \
           -instr-profile=$(find ${{ env.XCODE_DERIVED_DATA_PATH }}/Build -name Coverage.profdata) \
-          $(find ${{ env.XCODE_SCHEME }}-${{ matrix.destination }}.xctestproducts/Binaries -name ${{ env.COVERAGE_TARGET }} -type f -perm +111) > info.lcov
+          $(find ${{ env.XCODE_SCHEME }}-${{ matrix.destination }}.xctestproducts/Binaries -name ${{ env.COVERAGE_TARGET }} -type f -perm +111) \
+          > info.lcov
 
       - name: Upload coverage to Codecov
         if: steps.prepare-codecov-coverage-report.outcome == 'success'
