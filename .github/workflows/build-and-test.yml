@@ -40,7 +40,7 @@ jobs:
         destination: ['iOS', 'macOS']
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1
