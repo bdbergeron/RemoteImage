@@ -17,26 +17,37 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  OUTPUT_PATH: docs
+  TARGET: RemoteImage
+
 jobs:
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: macos-13
-    env:
-      TARGET: RemoteImage
-      DOCUMENTATION_PATH: docs
+    runs-on: macos-15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
+
       - name: Build documentation
-        run: swift package --allow-writing-to-directory ${{ env.DOCUMENTATION_PATH }} generate-documentation --disable-indexing --include-extended-types --output-path ${{ env.DOCUMENTATION_PATH }} --transform-for-static-hosting --target ${{ env.TARGET }}
+        run: |
+          swift package --allow-writing-to-directory ${{ env.OUTPUT_PATH }} \
+          generate-documentation --target ${{ env.TARGET }} \
+          --disable-indexing \
+          --transform-for-static-hosting \
+          --hosting-base-path ${{ github.event.repository.name }} \
+          --output-path ${{ env.OUTPUT_PATH }}
+      
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: ${{ env.DOCUMENTATION_PATH }}
+          path: ${{ env.OUTPUT_PATH }}
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
