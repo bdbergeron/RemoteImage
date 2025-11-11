@@ -42,12 +42,12 @@ jobs:
           --transform-for-static-hosting \
           --hosting-base-path ${{ github.event.repository.name }} \
           --output-path ${{ env.OUTPUT_PATH }}
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: ${{ env.OUTPUT_PATH }}
-      
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
