@@ -35,7 +35,7 @@ jobs:
     runs-on: macos-15
     strategy:
       matrix:
-        destination: ['macOS']
+        destination: ['iOS', 'macOS']
     steps:
       - name: Checkout
         uses: actions/checkout@v5
