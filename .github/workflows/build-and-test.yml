@@ -21,7 +21,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  COVERAGE_TARGET: RemoteImage
   SPM_PACKAGE_RESOLVED_PATH: Package.resolved
   XCODE_CLONED_SOURCE_PACKAGES_DIR_PATH: build/SourcePackages
   XCODE_DERIVED_DATA_PATH: .build
@@ -123,7 +122,7 @@ jobs:
           -format="lcov" \
           --ignore-filename-regex='(Tests|Mocks)[/\\].*' \
           -instr-profile=$(find ${{ env.XCODE_DERIVED_DATA_PATH }}/Build -name Coverage.profdata) \
-          $(find ${{ env.XCODE_SCHEME }}-${{ matrix.destination }}.xctestproducts/Binaries -name ${{ env.COVERAGE_TARGET }} -type f -perm +111) \
+          $(find ${{ env.XCODE_SCHEME }}-${{ matrix.destination }}.xctestproducts/Binaries -name ${{ env.XCODE_SCHEME }}Tests -type f -perm +111) \
           > info.lcov
 
       - name: Upload coverage to Codecov
