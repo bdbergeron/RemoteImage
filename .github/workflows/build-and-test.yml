@@ -24,7 +24,7 @@ env:
   COVERAGE_TARGET: RemoteImage
   SPM_PACKAGE_RESOLVED_PATH: Package.resolved
   XCODE_CLONED_SOURCE_PACKAGES_DIR_PATH: build/SourcePackages
-  XCODE_DERIVED_DATA_PATH: build
+  XCODE_DERIVED_DATA_PATH: .build
   XCODE_DESTINATION_IOS: platform=iOS Simulator,name=iPhone 16,OS=18.6
   XCODE_DESTINATION_MACOS: platform=macOS
   XCODE_SCHEME: RemoteImage
@@ -67,7 +67,7 @@ jobs:
         run: |
           set -o pipefail && \
           xcodebuild build-for-testing \
-          -scheme "${{ env.XCODE_SCHEME }}-Package" \
+          -scheme "${{ env.XCODE_SCHEME }}" \
           -destination "${{ steps.set-xcode-destination.outputs.destination }}" \
           -derivedDataPath "${{ env.XCODE_DERIVED_DATA_PATH }}" \
           -testProductsPath "${{ env.XCODE_SCHEME }}-${{ matrix.destination }}.xctestproducts" \
