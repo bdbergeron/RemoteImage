@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C2BB18C2EC40A4600E1623F /* RemoteImage in Frameworks */ = {isa = PBXBuildFile; productRef = 5C2BB18B2EC40A4600E1623F /* RemoteImage */; };
 		5CB155332EC402E500202B01 /* DemosList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1552A2EC402E500202B01 /* DemosList.swift */; };
 		5CB155342EC402E500202B01 /* RemoteImageDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1552D2EC402E500202B01 /* RemoteImageDemoApp.swift */; };
 		5CB1553A2EC4031800202B01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CB155382EC4031800202B01 /* Assets.xcassets */; };
 		5CB1553B2EC4031800202B01 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CB155362EC4031800202B01 /* Preview Assets.xcassets */; };
-		5CF621022EC4035B00668260 /* RemoteImage in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF621012EC4035B00668260 /* RemoteImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5CF621022EC4035B00668260 /* RemoteImage in Frameworks */,
+				5C2BB18C2EC40A4600E1623F /* RemoteImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +140,7 @@
 			packageReferences = (
 				5C0A6DD22AA2356E0078B6C9 /* XCRemoteSwiftPackageReference "ViewInspector" */,
 				5C5964DD2ABCC34A009E4AC8 /* XCRemoteSwiftPackageReference "Stubby" */,
-				5CF621002EC4035B00668260 /* XCLocalSwiftPackageReference "../../RemoteImage" */,
+				5C40EA352EC4090900C89FA8 /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = OBJ_5;
 			projectDirPath = "";
@@ -252,7 +252,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = 5WUK689P3B;
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -308,7 +307,6 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = 5WUK689P3B;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -365,7 +363,6 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = 5WUK689P3B;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -539,9 +536,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		5CF621002EC4035B00668260 /* XCLocalSwiftPackageReference "../../RemoteImage" */ = {
+		5C40EA352EC4090900C89FA8 /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../RemoteImage;
+			relativePath = ..;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -565,7 +562,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5CF621012EC4035B00668260 /* RemoteImage */ = {
+		5C2BB18B2EC40A4600E1623F /* RemoteImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RemoteImage;
 		};
