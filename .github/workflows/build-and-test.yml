@@ -21,13 +21,11 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  COVERAGE_TARGET: RemoteImage
-  SPM_PACKAGE_RESOLVED_PATH: RemoteImage.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+  SPM_PACKAGE_RESOLVED_PATH: Package.resolved
   XCODE_CLONED_SOURCE_PACKAGES_DIR_PATH: build/SourcePackages
-  XCODE_DERIVED_DATA_PATH: build
+  XCODE_DERIVED_DATA_PATH: .build
   XCODE_DESTINATION_IOS: platform=iOS Simulator,name=iPhone 16,OS=18.6
   XCODE_DESTINATION_MACOS: platform=macOS
-  XCODE_PROJECT: RemoteImage.xcodeproj
   XCODE_SCHEME: RemoteImage
   XCODE_VERSION: 16.4
  
@@ -68,7 +66,6 @@ jobs:
         run: |
           set -o pipefail && \
           xcodebuild build-for-testing \
-          -project "${{ env.XCODE_PROJECT }}" \
           -scheme "${{ env.XCODE_SCHEME }}" \
           -destination "${{ steps.set-xcode-destination.outputs.destination }}" \
           -derivedDataPath "${{ env.XCODE_DERIVED_DATA_PATH }}" \
@@ -125,7 +122,7 @@ jobs:
           -format="lcov" \
           --ignore-filename-regex='(Tests|Mocks)[/\\].*' \
           -instr-profile=$(find ${{ env.XCODE_DERIVED_DATA_PATH }}/Build -name Coverage.profdata) \
-          $(find ${{ env.XCODE_SCHEME }}-${{ matrix.destination }}.xctestproducts/Binaries -name ${{ env.COVERAGE_TARGET }} -type f -perm +111) \
+          $(find ${{ env.XCODE_SCHEME }}-${{ matrix.destination }}.xctestproducts/Binaries -name ${{ env.XCODE_SCHEME }}Tests -type f -perm +111) \
           > info.lcov
 
       - name: Upload coverage to Codecov
